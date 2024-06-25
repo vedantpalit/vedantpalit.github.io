@@ -72,7 +72,40 @@
             </tr>
           </tbody></table>
           <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
+    <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
+      <td style="padding:20px;width:25%;vertical-align:middle">
+        <div class="one">
+          <img src='images/welldunn.png' width=100%>
+        </div>
+        <script type="text/javascript">
+          function nuvo_start() {
+            document.getElementById('nuvo_image').style.opacity = "1";
+          }
 
+          function nuvo_stop() {
+            document.getElementById('nuvo_image').style.opacity = "0";
+          }
+          nuvo_stop()
+        </script>
+      </td>
+      <td style="padding:20px;width:75%;vertical-align:middle">
+        <a href="">
+          <span class="papertitle">What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation</span>
+        </a>
+        <br>
+        Michal Golovanesky, William Rudman, Vedant Palit, Ritambhara Singh, Carsten Eickhoff
+        <br>
+        <em>Under Review at EMNLP</em>, 2024
+        <br>
+        <a href="">Repo</a>
+        /
+        <a href="https://arxiv.org/abs/2406.12058v1">arXiv</a>
+        <p></p>
+        <p>
+          The first Noise-free Text-Image Corruption and Evaluation pipeline for mechanistic interpretability in VLMs which incorporates a Semantic Minimal Pairs (SMP) framework for image corruption and Symmetric Token Replacement (STR) for text, enabling semantically meaningful causal mediation analysis for both modalities to analyze multimodal integration in models like BLIP. 
+        </p>
+      </td>
+    </tr> 
     <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
       <td style="padding:20px;width:25%;vertical-align:middle">
         <div class="one">
