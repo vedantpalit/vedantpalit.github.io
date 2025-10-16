@@ -1,130 +1,135 @@
-/* Import Lato font */
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+/* Import Lato (simple load; Barron uses @font-face blocks) */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
-/* Global styles */
-body {
+/* Base typography — match Barron's 14px scale */
+body, td, th, tr, p, a {
   font-family: 'Lato', Verdana, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
+  color: #000000; /* black text */
+}
+
+body {
+  background-color: #FFFFFF; /* white background */
   line-height: 1.6;
-  color: #000000; /* Black text */
-  background-color: #FFFFFF; /* White background */
   margin: 0;
   padding: 0;
 }
 
-/* Typography */
+/* Links — Barron blue + orange hover, no underline */
+a {
+  color: #1772d0;
+  text-decoration: none;
+  transition: color .2s ease-in-out;
+}
+a:hover,
+a:focus {
+  color: #f09228;
+  text-decoration: none;
+}
+
+/* Headings — Barron only styles h2 explicitly; keep others minimal */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Lato', Verdana, Helvetica, sans-serif;
-  font-weight: 700;
-  color: #000000; /* Black */
-  margin-bottom: 10px;
+  color: #000000;
+  margin: 0 0 10px 0;
+  font-weight: normal; /* lighter feel like Barron's h2 */
 }
-
-h1 { font-size: 32px; }
-h2 { font-size: 26px; }
-h3 { font-size: 22px; }
-
-p {
-  margin-bottom: 15px;
+h2 {
+  font-size: 22px; /* Barron */
 }
+h1 { font-size: 26px; }
+h3 { font-size: 18px; }
 
-/* Links */
-a {
-  color: #0056D2; /* Blue */
-  text-decoration: none;
-  transition: color 0.3s ease-in-out;
-}
-
-a:hover, a:focus {
-  color: #1E90FF; /* Brighter blue */
-  text-decoration: underline;
-}
-
-/* Strong/Bold Text */
+/* Strong text — same scale as body in Barron */
 strong {
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
   font-weight: 700;
   color: #000000;
 }
 
-/* Name/Title */
+/* Name / Title — Barron: 32px, top padding */
 .name {
   padding-top: 20px;
   margin: 0;
-  font-size: 36px;
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 32px;
   font-weight: 700;
   color: #000000;
 }
 
-/* Paper title */
+/* Paper title — Barron: 14px bold */
 .papertitle {
-  font-size: 16px;
+  font-family: 'Lato', Verdana, Helvetica, sans-serif;
+  font-size: 14px;
   font-weight: 700;
   color: #000000;
 }
 
-/* Highlight */
+/* Paragraph spacing */
+p { margin: 0 0 15px 0; }
+
+/* Highlight — Barron's subtle yellow */
 span.highlight {
-  background-color: #EAEAEA;
-  color: #0056D2;
-  padding: 3px 6px;
-  border-radius: 5px;
+  background-color: #ffffd0;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 0;
 }
 
-/* Image Styling */
+/* Image hover containers — dimensions + .2s transitions with vendor prefixes */
 .one, .two {
   width: 160px;
   height: 160px;
   position: relative;
 }
-
 .two {
   position: absolute;
-  transition: opacity .3s ease-in-out;
+  transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -webkit-transition: opacity .2s ease-in-out;
 }
-
-/* Fade-in effect */
 .fade {
-  transition: opacity .3s ease-in-out;
+  transition: opacity .2s ease-in-out;
+  -moz-transition: opacity .2s ease-in-out;
+  -webkit-transition: opacity .2s ease-in-out;
 }
 
-/* Buttons */
+/* Optional colored box block (matches your snippet, fits Barron aesthetic) */
+.colored-box {
+  color: #000000;
+  padding: 20px;
+  display: inline-block;
+  border-radius: 10px;
+  background: #ffffd0; /* pairs nicely with highlight */
+}
+
+/* Buttons — adapt to Barron palette */
 button {
-  background-color: #2A3A4B; /* Deep navy */
+  background-color: #1772d0;
   color: #FFFFFF;
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color .2s ease-in-out;
 }
-
-button:hover {
-  background-color: #0056D2; /* Blue */
+button:hover,
+button:focus {
+  background-color: #f09228;
   color: #FFFFFF;
 }
 
-/* List hover effect */
-ul li:hover {
-    background-color: #F0F0F0;
-    transition: background-color 0.3s ease-in-out;
-}
+/* Lists — keep minimal to match Barron's clean look */
+ul { padding-left: 20px; }
+ul li { margin: 6px 0; }
 
-/* Responsive Adjustments */
+/* Responsive — gentle scale down, keeping Barron's proportions */
 @media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-  
-  .name {
-    font-size: 28px;
-  }
-
-  h1 {
-    font-size: 26px;
-  }
-
-  h2 {
-    font-size: 22px;
-  }
+  body, td, th, tr, p, a, strong { font-size: 13px; }
+  .name { font-size: 28px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  h3 { font-size: 16px; }
 }
