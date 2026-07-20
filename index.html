@@ -1,596 +1,99 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+    <meta charset="UTF-8">
     <title>Vedant Palit</title>
-
     <meta name="author" content="Vedant Palit">
+    <meta name="description" content="Vedant Palit — research portfolio. Mechanistic interpretability of AI models.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    
+    <script>
+      /* Set theme before first paint to avoid a flash of the wrong mode */
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="css/style.css">
   </head>
 
   <body>
-    <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-      <tr style="padding:0px">
-        <td style="padding:0px">
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr style="padding:0px">
-              <td style="padding:2.5%;width:63%;vertical-align:middle">
-                <p class="name" style="text-align: center;">
-                  Vedant Palit
-                </p>
-                <p>I am a final year student at <a href="https://www.iitkgp.ac.in/">IIT Kharagpur</a> pursuing a BTech in Industrial & Systems Engineering and an MTech in Financial Engineering.
-                </p>
-                <p>
-                  I am interested in machine and deep learning, particularly in the interpretability of AI models. I have been working primarily on mechanistic interpretability and its application in developing models with improved and trustworthy reasoning capabilities. During my undergrad, I have had the opportunity to work with <a href="https://zhijing-jin.com/home/">Dr. Zhijing Jin</a> at the University of Toronto, <a href="https://debabrota-basu.github.io/">Dr. Debabrota Basu</a> at University of Lille, members of <a href="https://health-nlp.com/people/carsten">Dr. Carsten Eickhoff</a>'s and <a href="https://ritambharasingh.com/">Dr. Ritambhara Singh</a>'s groups at the University of Tübingen and Brown University, and <a href="https://manasgaur.github.io/">Dr. Manas Gaur</a> at UMBC and <a href="https://kauroy1994.github.io/home/">Dr. Kaushik Roy</a> at AIISC.
-				  <p>I also enjoy quizzing, reading science fiction books and watching anime and movies of almost every genre.</p> 
-                  <p>Feel free to drop me an e-mail if you want to chat with me!</p>
-                <p style="text-align:center">
-                  <a href="mailto:vedantpalit@kgpian.iitkgp.ac.in">Email</a> &nbsp;/&nbsp;
-                  <a href="images/Vedant_Palit_C_V_web.pdf">CV</a> &nbsp;/&nbsp;
-                  <a href="https://scholar.google.com/citations?hl=en&user=aUL2jngAAAAJ">Scholar</a> &nbsp;/&nbsp;
-                  <a href="https://medium.com/@vedantpalit10">Blog</a> &nbsp;/&nbsp;
-                  <a href="https://github.com/vedantpalit">Github</a>
-                </p>
-              </td>
-              <td style="padding:2.5%;width:40%;max-width:40%">
-                <a href="images/vp.jpg"><img style="width:100%;max-width:100%;object-fit: cover; border-radius: 25%;" alt="profile photo" src="images/vp_c.jpg" class="hoverZoomLink"></a>
-              </td>
-            </tr>
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-            <tbody>
-    <tr>
-  <td style="padding: 15px 20px 0; width: 100%; vertical-align: middle;">
-    <h2 style="margin: 0; font-size: 26px; font-weight: bold; border-bottom: 2px solid #555; padding-bottom: 5px; color: #000000;">
-      Updates
-    </h2>
-  </td>
-</tr>
-<tr>
-  <td style="padding: 15px 20px; width: 100%; vertical-align: middle;">
-    <ul id="updates-list" style="list-style: none; padding: 0; margin: 0;">
-		<li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Jan '26]</span> Started as a <strong>Researcher</strong> at the <strong>Jinesis Lab, University of Toronto and Vector Institute</strong>.
-        </li>
-	   <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Oct '25]</span> Served as a <strong>Reviewer at ICLR 2026</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Sep '25]</span> Served as a <strong>Reviewer at NeurIPS Mechanistic Interpretability Workshop 2025</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Jul '25]</span> Interned at <strong>JP Morgan and Chase</strong> in the Model Risk and Governance Review Division from May to July 2025.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[May '25]</span> Our Paper <strong>"Forgotten Polygons: Multimodal Large Language Models are Shape-Blind"</strong> has been accepted to <strong>ACL Findings 2025</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Jan '25]</span> Our Paper <strong>"What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation"</strong> has been accepted to <strong>NAACL 2025</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Dec '24]</span> Lead the team of IIT Kharagpur to Gold at <strong>Adobe Image Classification Challenge</strong> (Inter IIT Tech Meet 2024).
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Oct '24]</span> Served as a <strong>Reviewer at ICLR 2025</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Sept '24]</span> Our paper <strong>"WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions"</strong> has been accepted at the <strong>EMNLP BlackBox NLP Workshop 2024</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Jun '24]</span>Served as a <strong>Reviewer at the ACM SIGKDD Workshop 2024 </strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Feb '24]</span> Started as an <strong>Undergraduate Researcher</strong> at the <strong>Singh Lab and HealthNLP Lab</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[Dec '23]</span> Started as a <strong>Research Intern</strong> at <strong>Inria Centre, University of Lille, France</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[July '23]</span> Our paper <strong>"Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP"</strong> has been accepted at the <strong>ICCV CLVL Workshop 2023</strong>.
-      </li>
-      <li style="padding: 8px 0; border-bottom: 1px solid #eee;">
-        <span style="color: #0056b3; font-weight: bold;">[June '23]</span> Our paper <strong>"Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust"</strong> was accepted at <strong>IEEE CAI 2023</strong>.
-      </li>
-      <li style="padding: 8px 0;">
-        <span style="color: #0056b3; font-weight: bold;">[Nov '22]</span> Started as a <strong>Research Intern</strong> at <strong>University of Maryland, Baltimore</strong>.
-      </li>
-      <li style="padding: 8px 0;">
-        <span style="color: #0056b3; font-weight: bold;">[Dec '21]</span> Accepted into <strong>IIT Kharagpur</strong>.
-      </li>
-    </ul>
-
-    <!-- Toggle button -->
-    <div style="margin-top: 10px;">
-      <button id="updates-toggle" aria-expanded="false">See more</button>
-    </div>
-  </td>
-</tr>
-</tbody>
-
-        </table>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-	  <tr>
-    <td style="padding: 15px 20px 0; width: 100%; vertical-align: middle;">
-        <h2 style="margin: 0; font-size: 26px; font-weight: bold; border-bottom: 2px solid #555; padding-bottom: 5px; color: #000000;"> Research</h2>
-    </td>
-</tr>
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-	 <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/clt-forge.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function nuvo_start() {
-            document.getElementById('nuvo_image').style.opacity = "1";
-          }
-
-          function nuvo_stop() {
-            document.getElementById('nuvo_image').style.opacity = "0";
-          }
-          nuvo_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs</span>
-        </b>
-        <br>
-        Florent Draye, Abir Harrasse, <strong>Vedant Palit</strong>, Tung-Yu Wu, Jiarui Liu, Punya Syon Pandey, Roderick Wu, Terry Jingchen Zhang, Zhijing Jin, Bernhard Schölkopf
-        <br>
-        <em>Under Review,<b>ACL Demo Track 2026</b></em>
-        <br>
-        <a href="https://github.com/LLM-Interp/CLT-Forge">Repo</a>
-        /
-        <a href="https://arxiv.org/abs/2603.21014">Paper</a>
-        <p>
-	</p>
-        <p> 
-        </p>
-      </td>
-    </tr> 
-     <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/shapeblind.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function nuvo_start() {
-            document.getElementById('nuvo_image').style.opacity = "1";
-          }
-
-          function nuvo_stop() {
-            document.getElementById('nuvo_image').style.opacity = "0";
-          }
-          nuvo_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">Forgotten Polygons: Multimodal Large Language Models are Shape-Blind</span>
-        </b>
-        <br>
-        William Rudman*,
-        Michal Golovanesky*,
-        Amir Bar,
-        <strong>Vedant Palit</strong>,
- 	Yann LeCun,
-        Carsten Eickhoff,
-	Ritambhara Singh
-        <br>
-        <em><b>ACL Findings 2025</b></em>
-        <br>
-        <a href="https://github.com/rsinghlab/Shape-Blind">Repo</a>
-        /
-        <a href="https://arxiv.org/abs/2502.15969">Paper</a>
-        <p></p>
-        <p>  
-        </p>
-      </td>
-    </tr> 
-    <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/notice.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function nuvo_start() {
-            document.getElementById('nuvo_image').style.opacity = "1";
-          }
-
-          function nuvo_stop() {
-            document.getElementById('nuvo_image').style.opacity = "0";
-          }
-          nuvo_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation</span>
-        </b>
-        <br>
-        Michal Golovanesky*, William Rudman*, <strong>Vedant Palit</strong>, Ritambhara Singh, Carsten Eickhoff
-        <br>
-        <em><b>NAACL 2025</b></em>
-        <br>
-        <a href="https://github.com/wrudman/NOTICE">Repo</a>
-        /
-        <a href="https://aclanthology.org/2025.naacl-long.571/">Paper</a>
-        <p>
-	</p>
-        <p> 
-        </p>
-      </td>
-    </tr> 
-    <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/welldunn.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function nuvo_start() {
-            document.getElementById('nuvo_image').style.opacity = "1";
-          }
-
-          function nuvo_stop() {
-            document.getElementById('nuvo_image').style.opacity = "0";
-          }
-          nuvo_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions</span>
-        </b>
-        <br>
-        Ali Mohammadi,
-        Edward Raff,
-        Jinendra Malekar,
-        <strong>Vedant Palit</strong>,
- 	Francis Ferraro,
-        Manas Gaur
-        <br>
-        <em><b>EMNLP 2024</b> (7th BlackBox NLP Workshop)</em>
-        <br>
-        <a href="https://github.com/vedantpalit/WellDunn">Repo</a>
-        /
-        <a href="https://aclanthology.org/2024.blackboxnlp-1.23/">Paper</a>
-	 
-	
-        <p></p>
-        <p>  
-        </p>
-      </td>
-    </tr> 
-    <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/mechinterpvl.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function smerf_start() {
-            document.getElementById('smerf_image').style.opacity = "1";
-          }
-
-          function smerf_stop() {
-            document.getElementById('smerf_image').style.opacity = "0";
-          }
-          smerf_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP</span>
-        </b>
-        <br>
-        <strong>Vedant Palit*</strong>,
-		Rohan Pandey*,
-		Aryaman Arora,
-		Paul Pu Liang
-        <br>
-        <em><b>ICCV 2023</b> (5th CLVL Workshop)</em>
-        <br>
-        <a href="https://github.com/vedantpalit/Towards-Vision-Language-Mechanistic-Interpretability">Repo</a>
-        /
-        <a href="https://openaccess.thecvf.com/content/ICCV2023W/CLVL/papers/Palit_Towards_Vision-Language_Mechanistic_Interpretability_A_Causal_Tracing_Tool_for_BLIP_ICCVW_2023_paper.pdf">Paper</a>
-        <p></p>
-        <p>
-        </p>
-      </td>
-    </tr>
-    <tr onmouseout="recon_stop()" onmouseover="recon_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/kgeval.png' width="160">
-        </div>
-        <script type="text/javascript">
-          function recon_start() {
-            document.getElementById('recon_image').style.opacity = "1";
-          }
-
-          function recon_stop() {
-            document.getElementById('recon_image').style.opacity = "0";
-          }
-          recon_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle"><b>
-			<span class="papertitle">Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust</span>
-      </b>
-        <br>
-        Kaushik Roy,
-		    Tarun Garg,
-        <strong>Vedant Palit</strong>,
-        Yuxin Zi,
-        Vignesh Narayanan,
-        Amit Sheth
-        <br>
-        <em><b>IEEE Conference on Artificial Intelligence 2023</b></em>
-        <br>
-        <a href="https://github.com/vedantpalit/KG-LLM">Repo</a>
-        /
-        <a href="https://ieeexplore.ieee.org/document/10195092">Paper</a>
-        <p></p>
-        <p>
-        </p>
-      </td>
-    </tr>
-    <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()">
-      <td style="padding:20px;width:25%;vertical-align:middle">
-        <div class="one">
-          <img src='images/kaushik_paper.png' width=100%>
-        </div>
-        <script type="text/javascript">
-          function nuvo_start() {
-            document.getElementById('nuvo_image').style.opacity = "1";
-          }
-
-          function nuvo_stop() {
-            document.getElementById('nuvo_image').style.opacity = "0";
-          }
-          nuvo_stop()
-        </script>
-      </td>
-      <td style="padding:20px;width:75%;vertical-align:middle">
-        <b>
-          <span class="papertitle">Exploring The Potential of Large Language Models for Assisting with Mental Health Diagnostic Assessments</span>
-        </b>
-        <br>
-        Kaushik Roy,
-        Harshul Surana,
-        Darssan Eswaramoorthi,
-        Yuxin Zi,
- 	<strong>Vedant Palit</strong>,
-	Ritvik Garimella,
-        Amit Sheth
-        <br>
-        <em><b>ACM Transactions on Computing for Healthcare 2025</b></em>
-        <br>
-        <a href="https://github.com/kauroy1994/Large-Language-Models-for-Assisting-with-Mental-Health-Diagnostic-Assessments">Repo</a>
-        /
-        <a href="https://arxiv.org/abs/2501.01305">Paper</a>
-        <p></p>
-        <p>  
-        </p>
-      </td>
-    </tr>
-	<!-- <tr onmouseout="nuvo_stop()" onmouseover="nuvo_start()"> <td style="padding:20px;width:25%;vertical-align:bottom"> <div class="one"> <img src='images/adaptive_fl.png' width=100%> </div> <script type="text/javascript"> function nuvo_start() { document.getElementById('nuvo_image').style.opacity = "1"; } function nuvo_stop() { document.getElementById('nuvo_image').style.opacity = "0"; } nuvo_stop() </script> </td> <td style="padding:20px;width:75%;vertical-align:middle"> <b> <span class="papertitle">Adaptive Federated Learning Defences via Trust-Aware Deep Q-Networks</span> </b> <br> <strong>Vedant Palit</strong> <br> <em>Under Review at <b>ICLR 2026</b></em> <br> <a href="https://github.com/vedantpalit/Adaptive-FL-DQN-Defense">Repo</a> / <a href="https://arxiv.org/abs/2510.01261">Preprint</a> <p></p> <p> </p> </td> </tr> -->
-
-          </tbody></table>
-
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr>
-    <td style="padding: 15px 20px 0; width: 100%; vertical-align: middle;">
-        <h2 style="margin: 0; font-size: 26px; font-weight: bold; border-bottom: 2px solid #555; padding-bottom: 5px; color: #000000;"> Projects</h2>
-    </td>
-</tr>
-        </tbody></table>
-        
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-<!--   <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-    <td style="padding:10px;width:30%;vertical-align:top">
-      <div class="one">
-        <img src='images/vrp.png' width=100%>
+    <nav>
+      <div class="container">
+        <a href="#updates">Updates</a>
+        <a href="#research">Research</a>
+        <a href="#projects">Projects</a>
+        <a href="#service">Service</a>
+        <a href="#blogs">Blogs</a>
+        <button id="theme-toggle" aria-label="Toggle light and dark mode">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
       </div>
-      <script type="text/javascript">
-        function smerf_start() {
-          document.getElementById('smerf_image').style.opacity = "1";
-        }
+    </nav>
 
-        function smerf_stop() {
-          document.getElementById('smerf_image').style.opacity = "0";
-        }
-        smerf_stop()
-      </script>
-    </td>
-    <td style="padding:10px;width:75%;vertical-align:top">
-        <span class="papertitle">Constrained Ocean Freight Optimization</span>
-      </a>
-      <br>
-      Operations Research Lab Project
-      <br>
-      <a href="https://github.com/vedantpalit/Ocean-Freight-Optimization">Repository</a>
-      <p>
-        Utilised and adapted the concept of capacity constrained vehicle routing to determine the optimal path to be taken by ships from a shipping company, using Gurobipy and CPLEX.
-      </p>
-    </td>
-  </tr> -->
-  <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-    <td style="padding:10px;width:30%;vertical-align:top">
-      <div class="one">
-        <img src='images/kgscreen.png' width=100%>
+    <header class="container">
+      <div class="intro">
+        <div class="intro-text">
+          <h1>Vedant Palit</h1>
+          <div id="bio"></div>
+          <div id="profile-links" class="profile-links"></div>
+        </div>
+        <div class="portrait">
+          <a href="images/vp.jpg"><img src="images/vp_c.jpg" alt="Vedant Palit"></a>
+          <div id="current" class="current" hidden></div>
+          <div id="widget"></div>
+        </div>
       </div>
-      <script type="text/javascript">
-        function smerf_start() {
-          document.getElementById('smerf_image').style.opacity = "1";
-        }
+    </header>
 
-        function smerf_stop() {
-          document.getElementById('smerf_image').style.opacity = "0";
-        }
-        smerf_stop()
-      </script>
-    </td>
-    <td style="padding:10px;width:75%;vertical-align:top">
-        <span class="papertitle">Knowledge Graph Generation from Scraped Text</span>
-      </a>
-      <br>
-      AIISC Project
-      <br>
-      <a href="https://github.com/vedantpalit/KNOWLEDGE-GRAPHS">Repository</a>
-      <p>
-        Created an automated text extraction system, for custom information extraction from an input wikipedia page followed by entity generation through parsing, named entity correlation and KG generation.
-      </p>
-    </td>
-  </tr>
-  <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-    <td style="padding:20px;width:30%;vertical-align:middle">
-      <div class="one">
-        <img src='images/foto1_stitched.png' width=100%>
-      </div>
-      <script type="text/javascript">
-        function smerf_start() {
-          document.getElementById('smerf_image').style.opacity = "1";
-        }
+    <main class="container">
+      <section id="updates">
+        <h2>Updates</h2>
+        <div id="updates-list" data-list></div>
+      </section>
 
-        function smerf_stop() {
-          document.getElementById('smerf_image').style.opacity = "0";
-        }
-        smerf_stop()
-      </script>
-    </td>
-    <td style="padding:10px;width:75%;vertical-align:top">
-        <span class="papertitle">Image Stitching and RANSAC Line Fitting</span>
-      </a>
-      <br>
-      Task for Autonomous Ground Vehicles Group, IIT KGP
-      <br>
-      <a href="https://github.com/vedantpalit/AUTONOMOUS-DRIVING/tree/main/TASKS/TASK-2">Repository</a>
-      <p>
-        Constructed a pipeline of the image stitching through brute-force matching as well as KNN Association of keypoints in two images of the same scene taken from close yet different angles.
-      </p>
-    </td>
-  </tr>
-<!--   <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-    <td style="padding:20px;width:30%;vertical-align:middle">
-      <div class="one">
-        <img src='images/dusseldorf2_segment.png' width=100%>
-      </div>
-      <script type="text/javascript">
-        function smerf_start() {
-          document.getElementById('smerf_image').style.opacity = "1";
-        }
+      <section id="research">
+        <h2>Research</h2>
+        <div id="papers-list" data-list></div>
+      </section>
 
-        function smerf_stop() {
-          document.getElementById('smerf_image').style.opacity = "0";
-        }
-        smerf_stop()
-      </script>
-    </td>
-    <td style="padding:10px;width:75%;vertical-align:top">
-        <span class="papertitle">Lane Detection and Gamma Correction</span>
-      </a>
-      <br>
-      Task for Autonomous Ground Vehicles Group, IIT KGP
-      <br>
-      <a href="https://github.com/vedantpalit/AUTONOMOUS-DRIVING/tree/main/TASKS/TASK-3">Repository</a>
-      <p>
-        Designed an algorithmic implementation of lane detection utilising a Gaussian blur and Gamma Correction for brightness adjustment, followed by canny edge and contour detection to detect roads in real-life images.
-      </p>
-    </td>
-  </tr> -->
-  <tr onmouseout="smerf_stop()" onmouseover="smerf_start()">
-    <td style="padding:10px;width:30%;vertical-align:middle">
-      <div class="one">
-        <img src='images/Trajectory_Superposition.png' width=100%>
-      </div>
-      <script type="text/javascript">
-        function smerf_start() {
-          document.getElementById('smerf_image').style.opacity = "1";
-        }
+      <section id="projects">
+        <h2>Projects</h2>
+        <div id="projects-list" data-list></div>
+      </section>
 
-        function smerf_stop() {
-          document.getElementById('smerf_image').style.opacity = "0";
-        }
-        smerf_stop()
-      </script>
-    </td>
-    <td style="padding:10px;width:75%;vertical-align:top">
-        <span class="papertitle">Kalman Filter Trajectory Determination</span>
-      </a>
-      <br>
-      Task for Autonomous Ground Vehicles Group, IIT KGP
-      <br>
-      <a href="https://github.com/vedantpalit/AUTONOMOUS-DRIVING/tree/main/TASKS/TASK-5">Repository</a>
-      <p>
-        Developed a trajectory determination program based on the kalman filter algorithm utilising information from acceleration and position sensors to predict the next position of a vehicle.
-      </p>
-    </td>
-  </tr>  
-        </tbody></table>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-          <tbody>
-              <tr>
-    <td style="padding: 15px 20px 0; width: 100%; vertical-align: middle;">
-        <h2 style="margin: 0; font-size: 26px; font-weight: bold; border-bottom: 2px solid #555; padding-bottom: 5px; color: #000000;"> Blogs</h2>
-    </td>
-</tr>
-              <tr>
-                  <td style="padding:10px 20px;width:100%;vertical-align:middle">
-                      <ul style="margin-top: 0;">
-                          <li><a href="https://medium.com/@vedantpalit10/pruning-and-merging-of-tokens-for-efficient-vl-models-a-review-5fa833a0c7e6">Pruning and Merging of Tokens for Efficient VL Models: A Review</a></li>
-                          <li><a href="https://medium.com/@vedantpalit10/i-jepa-an-improved-approach-towards-self-supervised-image-based-learning-f622a5793980">I-JEPA: An improved approach towards self-supervised image-based learning</a></li>
-                          <li><a href="https://thenonexistentpresent.wordpress.com/2023/06/13/a-newer-perspective-towards-evolution/">A Newer Perspective towards Evolution</a></li>
-                          <li><a href="https://thenonexistentpresent.wordpress.com/2023/05/27/a-bridge-between-the-past-and-the-future/">A Bridge between the Past and the Future</a></li>
-			  <li><a href="https://thenonexistentpresent.wordpress.com/2024/01/06/a-rebirth/">Rebirth?</li>
-                      </ul>
-                  </td>
-              </tr>
-          </tbody>
-      </table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-<!--             <tr>
-              <td style="padding:0px">
-                <br>
-                <p style="text-align:right;font-size:small;">
-                  Design and Source Code by <a href="https://jonbarron.info/">Jon Barron</a>.
-                </p>
-              </td>
-            </tr> -->
-          </tbody></table>
-        </td>
-      </tr>
-    </table>
-  <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const ITEMS_TO_SHOW = 5; // change to how many items you want visible by default
-    const list = document.getElementById('updates-list');
-    const btn = document.getElementById('updates-toggle');
-    if (!list || !btn) return;
+      <section id="service">
+        <h2>Academic Service</h2>
+        <div id="service-list" data-list></div>
+      </section>
 
-    const items = Array.from(list.querySelectorAll('li'));
-    if (items.length <= ITEMS_TO_SHOW) {
-      btn.style.display = 'none';
-      return;
-    }
+      <section id="blogs">
+        <h2>Blogs</h2>
+        <div id="blogs-list" data-list></div>
+      </section>
 
-    // Hide the extra items initially
-    items.slice(ITEMS_TO_SHOW).forEach(li => li.style.display = 'none');
-    let expanded = false;
+      <div id="sentinel"></div>
+    </main>
 
-    btn.addEventListener('click', () => {
-      expanded = !expanded;
-      items.slice(ITEMS_TO_SHOW).forEach(li => li.style.display = expanded ? 'list-item' : 'none');
-      btn.textContent = expanded ? 'See less' : 'See more';
-      btn.setAttribute('aria-expanded', String(expanded));
-    });
-  });
-</script>
+    <footer class="container">
+      Vedant Palit
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

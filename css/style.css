@@ -1,0 +1,542 @@
+/* Two themes: light, and a dark mode built on a near-black Prussian blue.
+   The active theme is set as data-theme on <html> (see inline script in index.html). */
+
+:root {
+  --bg: #fdfdfc;
+  --bg-soft: #f0f2f5;
+  --nav-bg: rgba(253, 253, 252, 0.85);
+  --text: #33393f;
+  --text-strong: #14181c;
+  --muted: #6e7681;
+  --accent: #1766c2;
+  --accent-hover: #d9862a;
+  --rule: #e3e6ea;
+  --max-width: 700px;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0a1420;
+  --bg-soft: #0f1f30;
+  --nav-bg: rgba(10, 20, 32, 0.85);
+  --text: #cfdae5;
+  --text-strong: #eef3f8;
+  --muted: #7f93a8;
+  --accent: #85b6ea;
+  --accent-hover: #f0b866;
+  --rule: #1b3048;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover,
+a:focus {
+  color: var(--accent-hover);
+}
+
+strong { color: var(--text-strong); }
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Nav ---- */
+
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--nav-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  transition: background-color 0.3s ease;
+}
+
+nav .container {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+nav a {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+nav a:hover,
+nav a.active { color: var(--text-strong); }
+
+/* Theme toggle: moon shown in light mode, sun in dark mode */
+
+#theme-toggle {
+  margin-left: auto;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+#theme-toggle:hover { color: var(--text-strong); }
+
+#theme-toggle svg { width: 18px; height: 18px; }
+
+#theme-toggle .icon-sun { display: none; }
+
+:root[data-theme="dark"] #theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+
+/* ---- Header / bio ---- */
+
+header { padding: 64px 0 16px; }
+
+.intro {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+.intro-text { flex: 1; }
+
+.intro h1 {
+  margin: 0 0 10px;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--text-strong);
+  letter-spacing: -0.02em;
+}
+
+.intro p { margin: 0 0 14px; }
+
+.portrait {
+  flex-shrink: 0;
+  width: 220px;
+  margin-top: 42px;
+}
+
+/* "Currently" block: borderless row-wise table under the portrait */
+
+.current {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.current-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.current-row {
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.current-row:last-child { border-bottom: none; }
+
+.current-row .role {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.portrait img {
+  width: 100%;
+  border-radius: 22%;
+  display: block;
+}
+
+.profile-links {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 14px;
+}
+
+/* Multi-option profile link (e.g. Email → MPI / UofT) */
+
+.dropdown { position: relative; }
+
+.dropdown .caret {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 130px;
+  padding: 6px 0;
+  background-color: var(--bg-soft);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.dropdown.open .dropdown-menu { display: block; }
+
+.dropdown-menu a {
+  display: block;
+  padding: 5px 14px;
+  white-space: nowrap;
+}
+
+.dropdown-menu a:hover { background-color: var(--rule); }
+
+/* Collaborator-graph toy under the portrait */
+
+.collab-widget { margin-top: 18px; }
+
+.collab-widget svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.collab-widget .e {
+  stroke: var(--muted);
+  stroke-opacity: 0.25;
+  stroke-width: 1;
+  transition: stroke-opacity 0.2s ease, stroke 0.2s ease;
+}
+
+.collab-widget .e.thick { stroke-width: 1.8; }
+
+.collab-widget .e.lit {
+  stroke: var(--accent);
+  stroke-opacity: 0.9;
+}
+
+.collab-widget .n {
+  fill: var(--muted);
+  fill-opacity: 0.8;
+  transition: fill-opacity 0.2s ease, fill 0.2s ease;
+}
+
+.collab-widget .n.linked { cursor: pointer; }
+
+.collab-widget .n.me { fill: var(--accent); fill-opacity: 0.95; }
+
+.collab-widget .n.lit { fill: var(--accent); fill-opacity: 1; }
+
+.collab-widget .lbl {
+  fill: var(--muted);
+  font-size: 7.5px;
+  text-anchor: middle;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+  transition: fill 0.2s ease;
+}
+
+.collab-widget .lbl.lit { fill: var(--text-strong); }
+
+.collab-widget .hint {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+  min-height: 16px;
+}
+
+/* Attention-arcs toy under the portrait */
+
+.attn-widget { margin-top: 18px; }
+
+.attn-widget svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.attn-heads {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.attn-chip {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 10.5px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.attn-chip:hover { color: var(--text-strong); }
+
+.attn-chip.on {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.attn-widget .tok {
+  fill: var(--bg-soft);
+  stroke: var(--rule);
+  stroke-width: 1;
+  cursor: pointer;
+  transition: stroke 0.2s ease;
+}
+
+.attn-widget .tok.active { stroke: var(--accent); }
+
+.attn-widget .tok-word {
+  fill: var(--text);
+  font-size: 9px;
+  text-anchor: middle;
+  cursor: pointer;
+  transition: fill 0.2s ease;
+}
+
+.attn-widget .tok-word.active { fill: var(--accent); font-weight: 700; }
+
+.attn-widget .arc {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+}
+
+.attn-widget .hint {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+  min-height: 16px;
+}
+
+.attn-input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 4px 2px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text);
+  font-size: 11.5px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.attn-input:focus { border-bottom-color: var(--accent); }
+
+.attn-input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* ---- Sections ---- */
+
+section { padding: 34px 0 6px; }
+
+section h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-strong);
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px;
+}
+
+/* Updates */
+
+.update {
+  display: flex;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.update:last-child { border-bottom: none; }
+
+.update .date {
+  flex-shrink: 0;
+  width: 62px;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 13px;
+  padding-top: 2px;
+}
+
+/* Academic service reuses the update-row look with a wider label;
+   venues flow inline separated by middots */
+
+.service-row .date { width: 90px; }
+
+.service-row .sep { color: var(--muted); }
+
+/* Papers & projects */
+
+.entry {
+  display: flex;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.entry:last-child { border-bottom: none; }
+
+.entry .thumb {
+  flex-shrink: 0;
+  width: 150px;
+}
+
+.entry .thumb img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  background-color: var(--bg-soft);
+}
+
+.entry .meta { flex: 1; min-width: 0; }
+
+.entry .title {
+  font-weight: 700;
+  color: var(--text-strong);
+  margin-bottom: 4px;
+}
+
+.entry .authors,
+.entry .context {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.entry .venue {
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.entry .description {
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.entry .links { font-size: 14px; }
+
+.entry .links a + a::before {
+  content: "/";
+  color: var(--muted);
+  margin: 0 8px 0 0;
+  padding-left: 8px;
+}
+
+/* Compact project rows */
+
+.project-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.project-row:last-child { border-bottom: none; }
+
+.project-row .title { font-weight: 700; }
+
+.project-row .context {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.project-row .description {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ---- Batched reveal ---- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+#sentinel { height: 1px; }
+
+footer {
+  padding: 48px 0 40px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 640px) {
+  header { padding-top: 40px; }
+
+  .intro { flex-direction: column-reverse; align-items: center; }
+
+  .portrait { width: 200px; margin-top: 0; }
+
+  .intro h1 { text-align: center; }
+
+  .entry { flex-direction: column; gap: 12px; }
+
+  .entry .thumb { width: 200px; max-width: 100%; }
+
+  .update { flex-direction: column; gap: 2px; }
+
+  .update .date { width: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { transition: none; transform: none; }
+}
