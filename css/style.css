@@ -413,6 +413,27 @@ section h2 {
 
 .service-row .sep { color: var(--muted); }
 
+/* Collapsed older updates */
+
+#updates-more { display: none; }
+
+#updates-more.open { display: block; }
+
+#updates-more .update:first-child { border-top: 1px solid var(--rule); }
+
+.show-more {
+  background: none;
+  border: none;
+  padding: 8px 0;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.show-more:hover { color: var(--accent-hover); }
+
 /* Papers & projects */
 
 .entry {

@@ -132,9 +132,13 @@
 
   const visible = arr => arr.filter(x => !x.hidden);
 
+  // Recent updates scroll in with the page; older ones sit behind a toggle
+  const RECENT_UPDATES = 5;
+
   // One flat queue of items in page order; each knows its target container.
   const queue = [];
-  visible(UPDATES).forEach(u => queue.push({ target: "updates-list", node: () => updateNode(u) }));
+  visible(UPDATES).slice(0, RECENT_UPDATES)
+    .forEach(u => queue.push({ target: "updates-list", node: () => updateNode(u) }));
   visible(PAPERS).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
   visible(PROJECTS).forEach(p => queue.push({ target: "projects-list", node: () => projectNode(p) }));
   visible(SERVICE).forEach(s => queue.push({ target: "service-list", node: () => serviceNode(s) }));
@@ -496,6 +500,21 @@
     render(SITE.sentence);
   }
 
+  function setupUpdatesToggle() {
+    const older = visible(UPDATES).slice(RECENT_UPDATES);
+    const btn = document.getElementById("updates-toggle");
+    if (!older.length || !btn) return;
+    const more = document.getElementById("updates-more");
+    older.forEach(u => more.appendChild(updateNode(u)));
+    const CLOSED = "show " + older.length + " earlier updates ▾";
+    btn.textContent = CLOSED;
+    btn.hidden = false;
+    btn.addEventListener("click", () => {
+      const open = more.classList.toggle("open");
+      btn.textContent = open ? "show less ▴" : CLOSED;
+    });
+  }
+
   function setupThemeToggle() {
     document.getElementById("theme-toggle").addEventListener("click", () => {
       const root = document.documentElement;
@@ -508,6 +527,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     setupThemeToggle();
     renderHeader();
+    setupUpdatesToggle();
     (SITE.widget === "collab" ? buildCollabWidget : buildAttentionWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll
     drainWhileNear();       // fill the initial viewport
