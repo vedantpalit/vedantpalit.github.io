@@ -478,6 +478,41 @@ section h2 {
   margin-bottom: 6px;
 }
 
+/* Venue pills, colored by venue family (amber = spotlight/award) */
+
+.badges {
+  margin: 2px 0 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.pill {
+  display: inline-block;
+  padding: 1.5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.pill-acl     { color: #b02a37; background-color: rgba(214, 43, 43, 0.09); }
+.pill-neurips { color: #6f42c1; background-color: rgba(111, 66, 193, 0.09); }
+.pill-ieee    { color: #1766c2; background-color: rgba(23, 102, 194, 0.09); }
+.pill-acm     { color: #0f766e; background-color: rgba(15, 118, 110, 0.09); }
+.pill-cvf     { color: #2e7d32; background-color: rgba(46, 125, 50, 0.09); }
+.pill-review  { color: #6e7681; background-color: rgba(110, 118, 129, 0.11); }
+.pill-award   { color: #a16207; background-color: rgba(240, 184, 102, 0.16); }
+
+:root[data-theme="dark"] .pill-acl     { color: #f28b82; background-color: rgba(242, 139, 130, 0.12); }
+:root[data-theme="dark"] .pill-neurips { color: #c5a3ff; background-color: rgba(197, 163, 255, 0.12); }
+:root[data-theme="dark"] .pill-ieee    { color: #8ab4f8; background-color: rgba(138, 180, 248, 0.12); }
+:root[data-theme="dark"] .pill-acm     { color: #7fd8ce; background-color: rgba(127, 216, 206, 0.12); }
+:root[data-theme="dark"] .pill-cvf     { color: #a5d6a7; background-color: rgba(165, 214, 167, 0.12); }
+:root[data-theme="dark"] .pill-review  { color: #8a95a3; background-color: rgba(138, 149, 163, 0.13); }
+:root[data-theme="dark"] .pill-award   { color: #f0b866; background-color: rgba(240, 184, 102, 0.13); }
+
 .entry .description {
   font-size: 14px;
   margin-top: 6px;

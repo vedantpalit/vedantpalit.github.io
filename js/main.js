@@ -88,7 +88,13 @@
     const meta = el("div", "meta");
     meta.appendChild(el("div", "title", item.title));
     meta.appendChild(el("div", "authors", item.authors));
-    if (item.venue) meta.appendChild(el("div", "venue", item.venue));
+    if (item.badges) {
+      const badges = el("div", "badges");
+      item.badges.forEach(b => badges.appendChild(el("span", "pill pill-" + b.tone, b.label)));
+      meta.appendChild(badges);
+    } else if (item.venue) {
+      meta.appendChild(el("div", "venue", item.venue));
+    }
     const links = el("div", "links");
     item.links.forEach(l => {
       const a = el("a", null, l.label);

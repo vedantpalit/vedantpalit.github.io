@@ -71,7 +71,10 @@ const PAPERS = [
     title: "Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics",
     image: "images/eutopia.png",
     authors: "<strong>Vedant Palit</strong>, Udvas Das, Brahim Driss, Debabrota Basu",
-    venue: "Spotlight (Extended Abstract) at <strong>ECAF 2026</strong> · <strong>ICML AI4LAW Workshop 2026</strong>",
+    badges: [
+      { label: "ECAF 2026 · Spotlight", tone: "award" },
+      { label: "ICML AI4LAW Workshop 2026", tone: "neurips" }
+    ],
     links: [
       { label: "Repo", url: "https://github.com/brahimdriss/LoanSimulator" },
       { label: "Paper", url: "https://github.com/brahimdriss/LoanSimulator/blob/main/Eutopia_2026.pdf" }
@@ -81,7 +84,10 @@ const PAPERS = [
     title: "CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs",
     image: "images/clt-forge.png",
     authors: "Florent Draye, <strong>Vedant Palit</strong>, Abir Harrasse, Tung-Yu Wu, Jiarui Liu, Punya Syon Pandey, Roderick Wu, Chih-Hao Hsu, Terry Jingchen Zhang, Zhijing Jin, Bernhard Schölkopf",
-    venue: "Under Review, <strong>EMNLP Demo Track 2026</strong>",
+    badges: [
+      { label: "Under Review", tone: "review" },
+      { label: "EMNLP Demo Track 2026", tone: "acl" }
+    ],
     links: [
       { label: "Repo", url: "https://github.com/LLM-Interp/CLT-Forge" },
       { label: "Paper", url: "https://arxiv.org/abs/2603.21014" }
@@ -91,7 +97,7 @@ const PAPERS = [
     title: "Forgotten Polygons: Multimodal Large Language Models are Shape-Blind",
     image: "images/shapeblind.png",
     authors: "William Rudman*, Michal Golovanesky*, Amir Bar, <strong>Vedant Palit</strong>, Yann LeCun, Carsten Eickhoff, Ritambhara Singh",
-    venue: "<strong>ACL Findings 2025</strong>",
+    badges: [{ label: "ACL Findings 2025", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/rsinghlab/Shape-Blind" },
       { label: "Paper", url: "https://arxiv.org/abs/2502.15969" }
@@ -101,7 +107,7 @@ const PAPERS = [
     title: "What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation",
     image: "images/notice.png",
     authors: "Michal Golovanesky*, William Rudman*, <strong>Vedant Palit</strong>, Ritambhara Singh, Carsten Eickhoff",
-    venue: "<strong>NAACL 2025</strong>",
+    badges: [{ label: "NAACL 2025", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/wrudman/NOTICE" },
       { label: "Paper", url: "https://aclanthology.org/2025.naacl-long.571/" }
@@ -111,7 +117,7 @@ const PAPERS = [
     title: "WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions",
     image: "images/welldunn.png",
     authors: "Ali Mohammadi, Edward Raff, Jinendra Malekar, <strong>Vedant Palit</strong>, Francis Ferraro, Manas Gaur",
-    venue: "<strong>EMNLP 2024</strong> (7th BlackBox NLP Workshop)",
+    badges: [{ label: "EMNLP 2024 · BlackBox NLP Workshop", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/WellDunn" },
       { label: "Paper", url: "https://aclanthology.org/2024.blackboxnlp-1.23/" }
@@ -121,7 +127,7 @@ const PAPERS = [
     title: "Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP",
     image: "images/mechinterpvl.png",
     authors: "<strong>Vedant Palit*</strong>, Rohan Pandey*, Aryaman Arora, Paul Pu Liang",
-    venue: "<strong>ICCV 2023</strong> (5th CLVL Workshop)",
+    badges: [{ label: "ICCV 2023 · CLVL Workshop", tone: "cvf" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/Towards-Vision-Language-Mechanistic-Interpretability" },
       { label: "Paper", url: "https://openaccess.thecvf.com/content/ICCV2023W/CLVL/papers/Palit_Towards_Vision-Language_Mechanistic_Interpretability_A_Causal_Tracing_Tool_for_BLIP_ICCVW_2023_paper.pdf" }
@@ -131,7 +137,7 @@ const PAPERS = [
     title: "Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust",
     image: "images/kgeval.png",
     authors: "Kaushik Roy, Tarun Garg, <strong>Vedant Palit</strong>, Yuxin Zi, Vignesh Narayanan, Amit Sheth",
-    venue: "<strong>IEEE Conference on Artificial Intelligence 2023</strong>",
+    badges: [{ label: "IEEE CAI 2023", tone: "ieee" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/KG-LLM" },
       { label: "Paper", url: "https://ieeexplore.ieee.org/document/10195092" }
@@ -141,7 +147,7 @@ const PAPERS = [
     title: "Exploring The Potential of Large Language Models for Assisting with Mental Health Diagnostic Assessments",
     image: "images/kaushik_paper.png",
     authors: "Kaushik Roy, Harshul Surana, Darssan Eswaramoorthi, Yuxin Zi, <strong>Vedant Palit</strong>, Ritvik Garimella, Amit Sheth",
-    venue: "<strong>ACM Transactions on Computing for Healthcare 2025</strong>",
+    badges: [{ label: "ACM Trans. on Computing for Healthcare 2025", tone: "acm" }],
     links: [
       { label: "Repo", url: "https://github.com/kauroy1994/Large-Language-Models-for-Assisting-with-Mental-Health-Diagnostic-Assessments" },
       { label: "Paper", url: "https://arxiv.org/abs/2501.01305" }
@@ -152,7 +158,7 @@ const PAPERS = [
     title: "Adaptive Federated Learning Defences via Trust-Aware Deep Q-Networks",
     image: "images/adaptive_fl.png",
     authors: "<strong>Vedant Palit</strong>",
-    venue: "Under Review at <strong>ICLR 2026</strong>",
+    badges: [{ label: "Under Review", tone: "review" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/Adaptive-FL-DQN-Defense" },
       { label: "Preprint", url: "https://arxiv.org/abs/2510.01261" }
