@@ -619,6 +619,101 @@
     select(items[0]);
   }
 
+  /* Luma: the site's original day/night pixel familiar, perched on the nav.
+     Awake (blinking, bobbing) in light mode; asleep with zzz's in dark.
+     Drawn from a pixel map; both themes recolor her via CSS variables. */
+  function buildCritter() {
+    const host = document.getElementById("critter");
+    if (!host) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 16 13");
+    svg.setAttribute("shape-rendering", "crispEdges");
+    svg.setAttribute("aria-hidden", "true");
+
+    const px = (x, y, cls, parent) => {
+      const r = document.createElementNS(NS, "rect");
+      r.setAttribute("x", x); r.setAttribute("y", y);
+      r.setAttribute("width", 1); r.setAttribute("height", 1);
+      r.setAttribute("class", cls);
+      (parent || svg).appendChild(r);
+    };
+
+    // o outline · b body · l belly/inner ear · a sun/moon mark · k blush
+    const ROWS = [
+      "...oo......oo...",
+      "..obbo....obbo..",
+      "..oblbo..oblbo..",
+      "..obbbbbbbbbbo..",
+      ".obbbbbaabbbbbo.",
+      ".obbbbbaabbbbbo.",
+      ".obbbbbbbbbbbbo.",
+      ".obkbbboobbbkbo.",
+      ".obblllllllbbbo.",
+      ".obblllllllbbbo.",
+      ".obbblllllbbbbo.",
+      "..obbbbbbbbbbo..",
+      "...oooooooooo..."
+    ];
+    ROWS.forEach((row, y) => {
+      [...row].forEach((ch, x) => { if (ch !== ".") px(x, y, "cr-" + ch); });
+    });
+
+    // Closed lids sit under the open eyes: blinking just hides the open pair
+    const closed = document.createElementNS(NS, "g");
+    closed.setAttribute("class", "cr-eyes-closed");
+    [[4, 6], [5, 6], [10, 6], [11, 6]].forEach(([x, y]) => px(x, y, "cr-e", closed));
+    svg.appendChild(closed);
+
+    const open = document.createElementNS(NS, "g");
+    open.setAttribute("class", "cr-eyes-open");
+    [[4, 5, "w"], [5, 5, "e"], [4, 6, "e"], [5, 6, "e"],
+     [10, 5, "w"], [11, 5, "e"], [10, 6, "e"], [11, 6, "e"]]
+      .forEach(([x, y, c]) => px(x, y, "cr-" + c, open));
+    svg.appendChild(open);
+
+    for (let i = 0; i < 3; i++) {
+      const z = document.createElementNS(NS, "text");
+      z.setAttribute("x", 13.2); z.setAttribute("y", 3.2);
+      z.setAttribute("class", "cr-z cr-z" + i);
+      z.textContent = "z";
+      svg.appendChild(z);
+    }
+
+    host.appendChild(svg);
+    host.title = "Luma";
+    host.addEventListener("click", () => {
+      host.classList.remove("hop");
+      void host.offsetWidth;   // restart the animation on rapid clicks
+      host.classList.add("hop");
+    });
+  }
+
+  /* Logit-lens name reveal: the name starts as shifting glyphs and settles
+     left to right, like a prediction converging across layers. */
+  function nameReveal() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const h1 = document.querySelector(".intro h1");
+    if (!h1) return;
+    const target = h1.textContent;
+    const glyphs = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const DURATION = 900;
+    const start = performance.now();
+    function frame(now) {
+      const p = Math.min(1, (now - start) / DURATION);
+      const settled = Math.floor(p * target.length);
+      let out = target.slice(0, settled);
+      for (let i = settled; i < target.length; i++) {
+        out += target[i] === " " ? " "
+          : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      h1.textContent = out;
+      if (p < 1) requestAnimationFrame(frame);
+      else h1.textContent = target;
+    }
+    requestAnimationFrame(frame);
+  }
+
   function setupThemeToggle() {
     document.getElementById("theme-toggle").addEventListener("click", () => {
       const root = document.documentElement;
@@ -631,6 +726,8 @@
   document.addEventListener("DOMContentLoaded", () => {
     setupThemeToggle();
     renderHeader();
+    nameReveal();
+    buildCritter();
     (SITE.updates === "timeline" ? setupUpdates : setupUpdatesAxis)();
     (SITE.widget === "collab" ? buildCollabWidget : buildAttentionWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll

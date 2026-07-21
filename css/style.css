@@ -12,6 +12,15 @@
   --accent-hover: #d9862a;
   --rule: #e3e6ea;
   --max-width: 700px;
+
+  /* Luma, awake (warm daytime palette) */
+  --cr-o: #39404a;
+  --cr-b: #f2d7a5;
+  --cr-l: #f9e9c8;
+  --cr-a: #e89b3c;
+  --cr-e: #2c313a;
+  --cr-w: #ffffff;
+  --cr-k: #eba7a0;
 }
 
 :root[data-theme="dark"] {
@@ -24,6 +33,15 @@
   --accent: #85b6ea;
   --accent-hover: #f0b866;
   --rule: #1b3048;
+
+  /* Luma, asleep (dusky moonlit palette) */
+  --cr-o: #0f1724;
+  --cr-b: #49597b;
+  --cr-l: #5a6c92;
+  --cr-a: #d9e4f7;
+  --cr-e: #0d131f;
+  --cr-w: #dfe8f7;
+  --cr-k: #6f6486;
 }
 
 * { box-sizing: border-box; }
@@ -115,6 +133,72 @@ nav a.active { color: var(--text-strong); }
 
 :root[data-theme="dark"] #theme-toggle .icon-sun { display: block; }
 :root[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
+
+/* Luma, the day/night pixel familiar on the nav */
+
+#critter {
+  display: flex;
+  align-items: flex-end;
+  margin-left: -8px;
+  cursor: pointer;
+}
+
+#critter svg {
+  width: 32px;
+  height: 26px;
+  animation: cr-bob 2.2s steps(2) infinite;
+}
+
+:root[data-theme="dark"] #critter svg { animation-duration: 3.6s; }
+
+.cr-o { fill: var(--cr-o); }
+.cr-b { fill: var(--cr-b); }
+.cr-l { fill: var(--cr-l); }
+.cr-a { fill: var(--cr-a); }
+.cr-e { fill: var(--cr-e); }
+.cr-w { fill: var(--cr-w); }
+.cr-k { fill: var(--cr-k); }
+
+.cr-eyes-open { animation: cr-blink 4.5s step-end infinite; }
+
+:root[data-theme="dark"] .cr-eyes-open {
+  display: none;
+  animation: none;
+}
+
+.cr-z {
+  font-size: 3.4px;
+  font-style: italic;
+  fill: var(--muted);
+  opacity: 0;
+}
+
+:root[data-theme="dark"] .cr-z  { animation: cr-zzz 2.7s linear infinite; }
+:root[data-theme="dark"] .cr-z1 { animation-delay: 0.9s; }
+:root[data-theme="dark"] .cr-z2 { animation-delay: 1.8s; }
+
+#critter.hop svg { animation: cr-hop 0.45s ease; }
+
+@keyframes cr-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(1px); }
+}
+
+@keyframes cr-blink {
+  0%, 90%, 96%, 100% { opacity: 1; }
+  92%, 94%           { opacity: 0; }
+}
+
+@keyframes cr-zzz {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  25%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(1.8px, -3.4px); }
+}
+
+@keyframes cr-hop {
+  30% { transform: translateY(-7px); }
+  60% { transform: translateY(2px); }
+}
 
 /* ---- Header / bio ---- */
 
@@ -783,4 +867,5 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { transition: none; transform: none; }
+  #critter svg, .cr-eyes-open, .cr-z { animation: none; }
 }
