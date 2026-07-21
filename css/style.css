@@ -386,7 +386,97 @@ section h2 {
   padding-bottom: 8px;
 }
 
-/* Updates */
+/* Updates timeline: vertical rail, type-colored dots, year markers */
+
+.timeline { position: relative; }
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background-color: var(--rule);
+}
+
+.tl-item {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 8px 0 8px 26px;
+}
+
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--muted);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+
+.t-paper::before    { background-color: #b02a37; }
+.t-position::before { background-color: var(--accent); }
+.t-award::before    { background-color: #d99a2b; }
+
+:root[data-theme="dark"] .t-paper::before { background-color: #f28b82; }
+:root[data-theme="dark"] .t-award::before { background-color: #f0b866; }
+
+.tl-item .date {
+  flex-shrink: 0;
+  width: 30px;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 12.5px;
+  padding-top: 2px;
+}
+
+.tl-year {
+  position: relative;
+  padding: 14px 0 2px 26px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-strong);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tl-year:hover { color: var(--accent); }
+
+.tl-year::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 22px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--bg);
+  border: 2px solid var(--muted);
+  transform: rotate(45deg);
+}
+
+.tl-count {
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.tl-caret {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--muted);
+  transition: transform 0.2s ease;
+}
+
+.tl-year.closed .tl-caret { transform: rotate(-90deg); }
+
+.tl-group.closed { display: none; }
+
+/* Service and blog rows (shared row style) */
 
 .update {
   display: flex;
@@ -412,27 +502,6 @@ section h2 {
 .service-row .date { width: 90px; }
 
 .service-row .sep { color: var(--muted); }
-
-/* Collapsed older updates */
-
-#updates-more { display: none; }
-
-#updates-more.open { display: block; }
-
-#updates-more .update:first-child { border-top: 1px solid var(--rule); }
-
-.show-more {
-  background: none;
-  border: none;
-  padding: 8px 0;
-  font-size: 13px;
-  font-family: inherit;
-  color: var(--accent);
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.show-more:hover { color: var(--accent-hover); }
 
 /* Papers & projects */
 

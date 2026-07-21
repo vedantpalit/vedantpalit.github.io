@@ -67,11 +67,12 @@
   }
 
   function updateNode(u) {
-    const row = el("div", "update");
-    row.appendChild(el("span", "date", u.date));
+    const row = el("div", "tl-item t-" + (u.type || "milestone"));
+    row.appendChild(el("span", "date", u.date.replace(/\s*'\d\d$/, "")));
     row.appendChild(el("span", "text", u.text));
     return row;
   }
+
 
   function entryNode(item) {
     const row = el("div", "entry");
@@ -138,13 +139,9 @@
 
   const visible = arr => arr.filter(x => !x.hidden);
 
-  // Recent updates scroll in with the page; older ones sit behind a toggle
-  const RECENT_UPDATES = 5;
-
   // One flat queue of items in page order; each knows its target container.
+  // (Updates render separately as collapsible year groups, see setupUpdates.)
   const queue = [];
-  visible(UPDATES).slice(0, RECENT_UPDATES)
-    .forEach(u => queue.push({ target: "updates-list", node: () => updateNode(u) }));
   visible(PAPERS).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
   visible(PROJECTS).forEach(p => queue.push({ target: "projects-list", node: () => projectNode(p) }));
   visible(SERVICE).forEach(s => queue.push({ target: "service-list", node: () => serviceNode(s) }));
@@ -506,18 +503,33 @@
     render(SITE.sentence);
   }
 
-  function setupUpdatesToggle() {
-    const older = visible(UPDATES).slice(RECENT_UPDATES);
-    const btn = document.getElementById("updates-toggle");
-    if (!older.length || !btn) return;
-    const more = document.getElementById("updates-more");
-    older.forEach(u => more.appendChild(updateNode(u)));
-    const CLOSED = "show " + older.length + " earlier updates ▾";
-    btn.textContent = CLOSED;
-    btn.hidden = false;
-    btn.addEventListener("click", () => {
-      const open = more.classList.toggle("open");
-      btn.textContent = open ? "show less ▴" : CLOSED;
+  // Timeline grouped by year; the newest year starts open, the rest collapsed
+  function setupUpdates() {
+    const list = document.getElementById("updates-list");
+    const groups = [];
+    visible(UPDATES).forEach(u => {
+      const y = "20" + u.date.slice(-2);
+      if (!groups.length || groups[groups.length - 1].year !== y) {
+        groups.push({ year: y, items: [] });
+      }
+      groups[groups.length - 1].items.push(u);
+    });
+    groups.forEach((g, gi) => {
+      const head = el("div", "tl-year",
+        g.year + ' <span class="tl-count">· ' + g.items.length + "</span>" +
+        ' <span class="tl-caret">▾</span>');
+      const body = el("div", "tl-group");
+      g.items.forEach(u => body.appendChild(updateNode(u)));
+      if (gi > 0) {
+        head.classList.add("closed");
+        body.classList.add("closed");
+      }
+      head.addEventListener("click", () => {
+        head.classList.toggle("closed");
+        body.classList.toggle("closed");
+      });
+      list.appendChild(head);
+      list.appendChild(body);
     });
   }
 
@@ -533,7 +545,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     setupThemeToggle();
     renderHeader();
-    setupUpdatesToggle();
+    setupUpdates();
     (SITE.widget === "collab" ? buildCollabWidget : buildAttentionWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll
     drainWhileNear();       // fill the initial viewport

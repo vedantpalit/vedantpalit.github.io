@@ -40,21 +40,23 @@ const SITE = {
   ]
 };
 
+/* type colors the timeline dot: paper (red), position (blue),
+   award (amber), milestone (gray) */
 const UPDATES = [
-  { date: "Jul '26", text: "Started as a <strong>Guest Researcher</strong> at the <strong>Max Planck Institute for Intelligent Systems, Tübingen</strong>." },
-  { date: "Jun '26", text: "Our paper <strong>“Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics”</strong> received a <strong>Spotlight at ECAF 2026</strong> (extended abstract) and was accepted to the <strong>ICML AI4LAW Workshop 2026</strong>." },
-  { date: "Jan '26", text: "Started as a <strong>Researcher</strong> at the <strong>Jinesis Lab, University of Toronto and Vector Institute</strong>." },
-  { date: "Jul '25", text: "Interned at <strong>JP Morgan and Chase</strong> in the Model Risk and Governance Review Division from May to July 2025." },
-  { date: "May '25", text: "Our paper <strong>“Forgotten Polygons: Multimodal Large Language Models are Shape-Blind”</strong> has been accepted to <strong>ACL Findings 2025</strong>." },
-  { date: "Jan '25", text: "Our paper <strong>“What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation”</strong> has been accepted to <strong>NAACL 2025</strong>." },
-  { date: "Dec '24", text: "Led the team of IIT Kharagpur to Gold at <strong>Adobe Image Classification Challenge</strong> (Inter IIT Tech Meet 2024)." },
-  { date: "Sep '24", text: "Our paper <strong>“WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions”</strong> has been accepted at the <strong>EMNLP BlackBox NLP Workshop 2024</strong>." },
-  { date: "Feb '24", text: "Started as an <strong>Undergraduate Researcher</strong> at the <strong>Singh Lab and HealthNLP Lab</strong>." },
-  { date: "Dec '23", text: "Started as a <strong>Research Intern</strong> at <strong>Inria Centre, University of Lille, France</strong>." },
-  { date: "Jul '23", text: "Our paper <strong>“Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP”</strong> has been accepted at the <strong>ICCV CLVL Workshop 2023</strong>." },
-  { date: "Jun '23", text: "Our paper <strong>“Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust”</strong> was accepted at <strong>IEEE CAI 2023</strong>." },
-  { date: "Nov '22", text: "Started as a <strong>Research Intern</strong> at <strong>University of Maryland, Baltimore</strong>." },
-  { date: "Dec '21", text: "Accepted into <strong>IIT Kharagpur</strong>." }
+  { date: "Jul '26", type: "position", text: "Started as a <strong>Guest Researcher</strong> at the <strong>Max Planck Institute for Intelligent Systems, Tübingen</strong>." },
+  { date: "Jun '26", type: "award", text: "Our paper <strong>“Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics”</strong> received a <strong>Spotlight at ECAF 2026</strong> (extended abstract) and was accepted to the <strong>ICML AI4LAW Workshop 2026</strong>." },
+  { date: "Jan '26", type: "position", text: "Started as a <strong>Researcher</strong> at the <strong>Jinesis Lab, University of Toronto and Vector Institute</strong>." },
+  { date: "Jul '25", type: "position", text: "Interned at <strong>JP Morgan and Chase</strong> in the Model Risk and Governance Review Division from May to July 2025." },
+  { date: "May '25", type: "paper", text: "Our paper <strong>“Forgotten Polygons: Multimodal Large Language Models are Shape-Blind”</strong> has been accepted to <strong>ACL Findings 2025</strong>." },
+  { date: "Jan '25", type: "paper", text: "Our paper <strong>“What Do VLMs NOTICE? A Mechanistic Interpretability Pipeline for Noise-free Text-Image Corruption and Evaluation”</strong> has been accepted to <strong>NAACL 2025</strong>." },
+  { date: "Dec '24", type: "award", text: "Led the team of IIT Kharagpur to Gold at <strong>Adobe Image Classification Challenge</strong> (Inter IIT Tech Meet 2024)." },
+  { date: "Sep '24", type: "paper", text: "Our paper <strong>“WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions”</strong> has been accepted at the <strong>EMNLP BlackBox NLP Workshop 2024</strong>." },
+  { date: "Feb '24", type: "position", text: "Started as an <strong>Undergraduate Researcher</strong> at the <strong>Singh Lab and HealthNLP Lab</strong>." },
+  { date: "Dec '23", type: "position", text: "Started as a <strong>Research Intern</strong> at <strong>Inria Centre, University of Lille, France</strong>." },
+  { date: "Jul '23", type: "paper", text: "Our paper <strong>“Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP”</strong> has been accepted at the <strong>ICCV CLVL Workshop 2023</strong>." },
+  { date: "Jun '23", type: "paper", text: "Our paper <strong>“Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust”</strong> was accepted at <strong>IEEE CAI 2023</strong>." },
+  { date: "Nov '22", type: "position", text: "Started as a <strong>Research Intern</strong> at <strong>University of Maryland, Baltimore</strong>." },
+  { date: "Dec '21", type: "milestone", text: "Accepted into <strong>IIT Kharagpur</strong>." }
 ];
 
 const PAPERS = [
