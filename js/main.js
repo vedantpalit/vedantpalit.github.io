@@ -515,8 +515,11 @@
       groups[groups.length - 1].items.push(u);
     });
     groups.forEach((g, gi) => {
+      const dots = g.items
+        .map(u => '<i class="tl-mini t-' + (u.type || "milestone") + '"></i>')
+        .join("");
       const head = el("div", "tl-year",
-        g.year + ' <span class="tl-count">· ' + g.items.length + "</span>" +
+        g.year + ' <span class="tl-preview">' + dots + "</span>" +
         ' <span class="tl-caret">▾</span>');
       const body = el("div", "tl-group");
       g.items.forEach(u => body.appendChild(updateNode(u)));
@@ -533,6 +536,89 @@
     });
   }
 
+  /* Horizontal axis: dots placed by real date, year ticks, and a fixed
+     detail line that fills on hover/tap. Height stays constant forever. */
+  function setupUpdatesAxis() {
+    const list = document.getElementById("updates-list");
+    list.classList.remove("timeline");
+    const MONTHS = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, June: 5,
+                     Jul: 6, July: 6, Aug: 7, Sep: 8, Sept: 8, Oct: 9, Nov: 10, Dec: 11 };
+    const items = visible(UPDATES).map(u => {
+      const m = u.date.match(/^(\w+)\s+'(\d\d)/);
+      return { u, t: new Date(2000 + Number(m[2]), MONTHS[m[1]] || 0, 1).getTime() };
+    });
+    const tMin = Math.min(...items.map(i => i.t));
+    const tMax = Math.max(...items.map(i => i.t));
+    const toX = t => 3 + 94 * (t - tMin) / (tMax - tMin);
+    items.forEach(i => { i.x = toX(i.t); });
+
+    // Nudge near-coincident dots apart so every one stays hoverable
+    const GAP = 2.4;
+    const sorted = [...items].sort((a, b) => a.x - b.x);
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i].x < sorted[i - 1].x + GAP) sorted[i].x = sorted[i - 1].x + GAP;
+    }
+    for (let i = sorted.length - 1; i >= 0; i--) {
+      if (sorted[i].x > 97) sorted[i].x = 97;
+      if (i < sorted.length - 1 && sorted[i].x > sorted[i + 1].x - GAP) {
+        sorted[i].x = sorted[i + 1].x - GAP;
+      }
+    }
+
+    const track = el("div", "ax-track");
+    const detail = el("div", "ax-detail");
+    const prev = el("button", "ax-arrow", "‹");
+    const next = el("button", "ax-arrow", "›");
+    prev.setAttribute("aria-label", "earlier update");
+    next.setAttribute("aria-label", "later update");
+    let current = 0;
+
+    for (let y = new Date(tMin).getFullYear(); y <= new Date(tMax).getFullYear(); y++) {
+      const t = new Date(y, 0, 1).getTime();
+      if (t < tMin || t > tMax) continue;
+      const tick = el("span", "ax-tick", "’" + String(y).slice(-2));
+      tick.style.left = toX(t) + "%";
+      track.appendChild(tick);
+    }
+
+    function select(i) {
+      current = sorted.indexOf(i);
+      items.forEach(j => j.el.classList.toggle("active", j === i));
+      detail.innerHTML = '<span class="ax-date">' + i.u.date + "</span> — " + i.u.text;
+      prev.disabled = current === 0;
+      next.disabled = current === sorted.length - 1;
+    }
+
+    const step = d => { if (sorted[current + d]) select(sorted[current + d]); };
+    prev.addEventListener("click", () => step(-1));
+    next.addEventListener("click", () => step(1));
+    document.addEventListener("keydown", e => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "ArrowRight") step(1);
+    });
+
+    items.forEach(i => {
+      const dot = el("button", "ax-dot t-" + (i.u.type || "milestone"));
+      dot.style.left = i.x + "%";
+      dot.setAttribute("aria-label", i.u.date);
+      dot.addEventListener("mouseenter", () => select(i));
+      dot.addEventListener("click", () => select(i));
+      i.el = dot;
+      track.appendChild(dot);
+    });
+
+    list.appendChild(track);
+    const row = el("div", "ax-detail-row");
+    row.appendChild(detail);
+    const nav = el("div", "ax-nav");
+    nav.appendChild(prev);
+    nav.appendChild(next);
+    row.appendChild(nav);
+    list.appendChild(row);
+    select(items[0]);
+  }
+
   function setupThemeToggle() {
     document.getElementById("theme-toggle").addEventListener("click", () => {
       const root = document.documentElement;
@@ -545,7 +631,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     setupThemeToggle();
     renderHeader();
-    setupUpdates();
+    (SITE.updates === "timeline" ? setupUpdates : setupUpdatesAxis)();
     (SITE.widget === "collab" ? buildCollabWidget : buildAttentionWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll
     drainWhileNear();       // fill the initial viewport
