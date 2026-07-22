@@ -6,8 +6,8 @@ const SITE = {
   name: "Vedant Palit",
   photo: "images/vp_c.jpg",
   photoFull: "images/vp.jpg",
-  /* Which toy to show under the portrait: "attention" or "collab" */
-  widget: "attention",
+  /* Which toy to show under the portrait: "ioi", "attention" or "collab" */
+  widget: "ioi",
   /* Updates layout: "axis" (horizontal) or "timeline" (vertical, collapsible years) */
   updates: "axis",
   /* Default sentence for the attention toy (visitors can type their own) */

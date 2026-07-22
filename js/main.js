@@ -619,6 +619,192 @@
     select(items[0]);
   }
 
+  /* Path patching on the IOI circuit (Wang et al. 2022). Click a head to
+     patch it out; P(Mary) vs P(John) react per the paper's story:
+     duplicate-token heads feed S-inhibition, S-inhibition steers the name
+     movers away from "John", and a backup name mover compensates when a
+     primary one is ablated. */
+  function buildIOIWidget() {
+    const host = document.getElementById("widget");
+    if (!host) return;
+    host.className = "ioi-widget";
+    const NS = "http://www.w3.org/2000/svg";
+
+    const sent = el("div", "ioi-sent",
+      'When <span class="io">Mary</span> and <span class="s">John</span> went to the store, ' +
+      '<span class="s">John</span> gave a drink to <span class="blank">___</span>');
+
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 220 132");
+    const defs = document.createElementNS(NS, "defs");
+    defs.innerHTML = '<marker id="ioi-arr" viewBox="0 0 6 6" refX="5" refY="3"' +
+      ' markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L6 3L0 6z"/></marker>';
+    svg.appendChild(defs);
+
+    // Real head names from the paper; three groups plus one backup name mover
+    const groups = {
+      dt: { label: "dup. tokens", y: 106, heads: [] },
+      si: { label: "s-inhibition", y: 70, heads: [] },
+      nm: { label: "name movers", y: 34, heads: [] }
+    };
+    const HEADS = [
+      { id: "0.1", type: "dt", x: 78 }, { id: "3.0", type: "dt", x: 140 },
+      { id: "7.9", type: "si", x: 78 }, { id: "8.6", type: "si", x: 140 },
+      { id: "9.9", type: "nm", x: 66 }, { id: "9.6", type: "nm", x: 122 },
+      { id: "10.10", type: "nm", x: 178, backup: true }
+    ];
+    HEADS.forEach(h => { h.dead = false; groups[h.type].heads.push(h); });
+
+    const edges = [];
+    const pairs = [["dt", "si"], ["si", "nm"]];
+    pairs.forEach(([a, b]) => {
+      groups[a].heads.forEach(ha => groups[b].heads.forEach(hb =>
+        edges.push({ a: ha, b: hb })));
+    });
+    edges.forEach(e => {
+      const line = document.createElementNS(NS, "line");
+      line.setAttribute("x1", e.a.x); line.setAttribute("y1", groups[e.a.type].y - 8);
+      line.setAttribute("x2", e.b.x); line.setAttribute("y2", groups[e.b.type].y + 8);
+      line.setAttribute("class", "ioi-e");
+      line.setAttribute("marker-end", "url(#ioi-arr)");
+      e.el = line;
+      svg.appendChild(line);
+    });
+
+    // The prediction slot the name movers write into
+    groups.nm.heads.forEach(h => {
+      const line = document.createElementNS(NS, "line");
+      line.setAttribute("x1", h.x); line.setAttribute("y1", groups.nm.y - 8);
+      line.setAttribute("x2", 110 + (h.x - 110) * 0.12); line.setAttribute("y2", 16);
+      line.setAttribute("class", "ioi-e");
+      line.setAttribute("marker-end", "url(#ioi-arr)");
+      edges.push({ a: h, b: h, el: line });
+      svg.appendChild(line);
+    });
+    const outText = document.createElementNS(NS, "text");
+    outText.setAttribute("x", 110); outText.setAttribute("y", 11);
+    svg.appendChild(outText);
+
+    Object.values(groups).forEach(g => {
+      const t = document.createElementNS(NS, "text");
+      t.setAttribute("x", 2); t.setAttribute("y", g.y + 3);
+      t.setAttribute("class", "ioi-lbl");
+      t.textContent = g.label;
+      svg.appendChild(t);
+    });
+
+    const DEFAULT_HINT = "the IOI circuit (Wang et al. ’22) — tap a head to path-patch it";
+    let lastMsg = DEFAULT_HINT;
+    const hint = el("div", "hint", DEFAULT_HINT);
+
+    const bars = el("div", "ioi-bars");
+    const mkBar = (name, cls) => {
+      const row = el("div", "ioi-bar-row");
+      row.appendChild(el("span", "ioi-name", name));
+      const track = el("div", "ioi-track");
+      const fill = el("div", "ioi-fill " + cls);
+      track.appendChild(fill);
+      row.appendChild(track);
+      const pct = el("span", "ioi-pct");
+      row.appendChild(pct);
+      bars.appendChild(row);
+      return { fill, pct };
+    };
+    const maryBar = mkBar("Mary", "mary");
+    const johnBar = mkBar("John", "john");
+
+    const alive = arr => arr.filter(h => !h.dead).length / arr.length;
+
+    function recompute(message) {
+      const dt = alive(groups.dt.heads);
+      const primaries = groups.nm.heads.filter(h => !h.backup);
+      const backup = groups.nm.heads.find(h => h.backup);
+      // Induction heads (not drawn) redundantly carry the duplication signal,
+      // so losing the duplicate-token heads only partly weakens S-inhibition;
+      // and without S-inhibition the model favors "John" mildly, not totally.
+      const sih = alive(groups.si.heads) * (0.45 + 0.55 * dt);
+      const nmP = alive(primaries);
+      const nm = nmP + (backup.dead ? 0 : 0.85 * (1 - nmP));
+      const margin = nm * (1.35 * sih - 0.35);
+      const pMary = Math.round(50 + 44 * margin);
+
+      outText.textContent = pMary >= 55 ? "Mary" : pMary <= 45 ? "John" : "?";
+      outText.setAttribute("class", "ioi-out " +
+        (pMary >= 55 ? "om" : pMary <= 45 ? "oj" : "ou"));
+
+      maryBar.fill.style.width = pMary + "%";
+      maryBar.pct.textContent = pMary + "%";
+      johnBar.fill.style.width = (100 - pMary) + "%";
+      johnBar.pct.textContent = (100 - pMary) + "%";
+
+      HEADS.forEach(h => h.el.classList.toggle("dead", h.dead));
+      edges.forEach(e => e.el.classList.toggle("dead", e.a.dead || e.b.dead));
+      if (message) { hint.textContent = message; lastMsg = message; }
+      reset.hidden = !HEADS.some(h => h.dead);
+    }
+
+    function messageFor(h) {
+      if (!h.dead) return "head " + h.id + " restored";
+      const primaries = groups.nm.heads.filter(x => !x.backup);
+      const backup = groups.nm.heads.find(x => x.backup);
+      if (h.type === "nm" && !h.backup && !backup.dead)
+        return "name mover " + h.id + " patched — backup 10.10 picks up the slack";
+      if (groups.nm.heads.every(x => x.dead))
+        return "no name movers left — nothing copies “Mary” to the output";
+      if (h.backup && primaries.every(x => x.dead))
+        return "backup gone too — the prediction collapses";
+      if (h.type === "si")
+        return "S-inhibition weakened — less stops the model repeating “John”";
+      if (h.type === "dt")
+        return "duplicate-token head gone — induction heads (not shown) still spot the repeat";
+      return "head " + h.id + " patched";
+    }
+
+    const ROLES = {
+      dt: "notices “John” appears twice",
+      si: "tells the name movers to steer away from “John”",
+      nm: "copies “Mary” into the prediction",
+      bk: "backup — wakes up if a name mover is patched"
+    };
+
+    HEADS.forEach(h => {
+      const g = document.createElementNS(NS, "g");
+      g.setAttribute("class", "ioi-head" + (h.backup ? " backup" : ""));
+      const r = document.createElementNS(NS, "rect");
+      r.setAttribute("x", h.x - 15); r.setAttribute("y", groups[h.type].y - 8);
+      r.setAttribute("width", 30); r.setAttribute("height", 16);
+      r.setAttribute("rx", 4);
+      const t = document.createElementNS(NS, "text");
+      t.setAttribute("x", h.x); t.setAttribute("y", groups[h.type].y + 3);
+      t.textContent = h.id;
+      g.appendChild(r); g.appendChild(t);
+      g.addEventListener("click", () => {
+        h.dead = !h.dead;
+        recompute(messageFor(h));
+      });
+      g.addEventListener("mouseenter", () => {
+        hint.textContent = h.id + " · " + (h.backup ? ROLES.bk : ROLES[h.type]);
+      });
+      g.addEventListener("mouseleave", () => { hint.textContent = lastMsg; });
+      h.el = g;
+      svg.appendChild(g);
+    });
+
+    const reset = el("button", "ioi-reset", "restore all heads");
+    reset.hidden = true;
+    reset.addEventListener("click", () => {
+      HEADS.forEach(h => { h.dead = false; });
+      recompute("circuit restored");
+    });
+
+    host.appendChild(sent);
+    host.appendChild(svg);
+    host.appendChild(bars);
+    host.appendChild(hint);
+    host.appendChild(reset);
+    recompute();
+  }
+
   /* Luma: the site's original day/night pixel familiar, perched on the nav.
      Awake (blinking, bobbing) in light mode; asleep with zzz's in dark.
      Drawn from a pixel map; both themes recolor her via CSS variables. */
@@ -723,13 +909,28 @@
     });
   }
 
+  /* External links (and the CV pdf) open in a new tab so the site stays
+     put. Delegated on click, so batch-rendered content is covered too. */
+  function setupExternalLinks() {
+    document.addEventListener("click", e => {
+      const a = e.target.closest("a[href]");
+      if (!a) return;
+      const href = a.getAttribute("href");
+      if (/^https?:\/\//.test(href) || href.endsWith(".pdf")) {
+        a.target = "_blank";
+        a.rel = "noopener";
+      }
+    }, true);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    setupExternalLinks();
     setupThemeToggle();
     renderHeader();
     nameReveal();
     buildCritter();
     (SITE.updates === "timeline" ? setupUpdates : setupUpdatesAxis)();
-    (SITE.widget === "collab" ? buildCollabWidget : buildAttentionWidget)();
+    ({ collab: buildCollabWidget, attention: buildAttentionWidget, ioi: buildIOIWidget }[SITE.widget] || buildIOIWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll
     drainWhileNear();       // fill the initial viewport
     setupObserver();

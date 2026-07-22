@@ -59,15 +59,50 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Links: color swap + an underline that slides in from the left */
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.2s ease;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: color 0.2s ease, background-size 0.25s ease, transform 0.1s ease;
 }
 
 a:hover,
 a:focus {
   color: var(--accent-hover);
+  background-size: 100% 1px;
+}
+
+/* No sliding underline where it doesn't belong */
+nav a,
+.dropdown-menu a {
+  background-image: none;
+}
+
+/* Press feedback on discrete, non-flowing links and buttons */
+nav a,
+.profile-links a,
+.entry .links a,
+.project-row .title a {
+  display: inline-block;
+}
+
+nav a:active,
+.profile-links a:active,
+.entry .links a:active,
+.project-row .title a:active {
+  transform: scale(0.95);
+}
+
+button {
+  transition: transform 0.1s ease;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.92);
 }
 
 strong { color: var(--text-strong); }
@@ -122,7 +157,7 @@ nav a.active { color: var(--text-strong); }
   color: var(--muted);
   display: flex;
   align-items: center;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.1s ease;
 }
 
 #theme-toggle:hover { color: var(--text-strong); }
@@ -388,7 +423,7 @@ header { padding: 64px 0 16px; }
   font-size: 10.5px;
   color: var(--muted);
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
 }
 
 .attn-chip:hover { color: var(--text-strong); }
@@ -455,6 +490,152 @@ header { padding: 64px 0 16px; }
   font-style: italic;
   opacity: 0.7;
 }
+
+/* IOI path-patching toy under the portrait */
+
+.ioi-widget { margin-top: 18px; }
+
+.ioi-widget svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 6px 0 2px;
+}
+
+.ioi-sent {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.ioi-sent .io { color: var(--accent); font-weight: 700; }
+.ioi-sent .s { color: #c4635e; font-weight: 700; }
+.ioi-sent .blank { color: var(--text-strong); letter-spacing: 1px; }
+
+:root[data-theme="dark"] .ioi-sent .s { color: #e29691; }
+
+.ioi-e {
+  stroke: var(--muted);
+  opacity: 0.35;
+  stroke-width: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.ioi-e.dead { opacity: 0.07; }
+
+#ioi-arr path { fill: var(--muted); }
+
+.ioi-out {
+  font-size: 8.5px;
+  font-weight: 700;
+  text-anchor: middle;
+  transition: fill 0.3s ease;
+}
+
+.ioi-out.om { fill: var(--accent); }
+.ioi-out.oj { fill: #c4635e; }
+.ioi-out.ou { fill: var(--muted); }
+
+:root[data-theme="dark"] .ioi-out.oj { fill: #e29691; }
+
+.ioi-lbl {
+  fill: var(--muted);
+  font-size: 6.5px;
+  letter-spacing: 0.04em;
+}
+
+.ioi-head { cursor: pointer; }
+
+.ioi-head rect {
+  fill: var(--bg-soft);
+  stroke: var(--rule);
+  stroke-width: 1;
+  transition: stroke 0.2s ease, fill-opacity 0.2s ease;
+}
+
+.ioi-head.backup rect { stroke-dasharray: 3 2; }
+
+.ioi-head text {
+  fill: var(--text);
+  font-size: 7.5px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.ioi-head:hover rect { stroke: var(--accent); }
+
+.ioi-head.dead rect {
+  fill: none;
+  stroke-dasharray: 2 2;
+  stroke: var(--muted);
+}
+
+.ioi-head.dead text { fill: var(--muted); opacity: 0.55; }
+
+.ioi-bars { margin-top: 4px; }
+
+.ioi-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.ioi-name {
+  width: 34px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.ioi-track {
+  flex: 1;
+  height: 9px;
+  border-radius: 999px;
+  background-color: var(--bg-soft);
+  overflow: hidden;
+}
+
+.ioi-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.45s ease;
+}
+
+.ioi-fill.mary { background-color: var(--accent); }
+.ioi-fill.john { background-color: #c4635e; }
+
+:root[data-theme="dark"] .ioi-fill.john { background-color: #b3706c; }
+
+.ioi-pct {
+  width: 32px;
+  text-align: right;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ioi-widget .hint {
+  margin-top: 7px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+  min-height: 16px;
+}
+
+.ioi-reset {
+  display: block;
+  margin: 4px auto 0;
+  background: none;
+  border: none;
+  padding: 2px 6px;
+  font-size: 11px;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.ioi-reset:hover { color: var(--accent-hover); }
 
 /* ---- Sections ---- */
 
@@ -558,7 +739,7 @@ section h2 {
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
 }
 
 .ax-arrow:hover:not(:disabled) {
