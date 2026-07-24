@@ -224,21 +224,36 @@ const SERVICE = [
   }
 ];
 
-/* One row per platform; posts flow inline, so new posts never add rows. */
+/* One pill card per post; blurb is the post's actual opening lines. */
 const BLOGS = [
   {
     source: "Medium",
-    posts: [
-      { title: "Pruning and Merging of Tokens for Efficient VL Models", url: "https://medium.com/@vedantpalit10/pruning-and-merging-of-tokens-for-efficient-vl-models-a-review-5fa833a0c7e6" },
-      { title: "I-JEPA: Self-Supervised Image-Based Learning", url: "https://medium.com/@vedantpalit10/i-jepa-an-improved-approach-towards-self-supervised-image-based-learning-f622a5793980" }
-    ]
+    title: "Pruning and Merging of Tokens for Efficient VL Models",
+    blurb: "Often in tasks related to computer vision and NLP, computationally expensive and memory-intensive processing becomes a hindrance towards faster model inferencing…",
+    url: "https://medium.com/@vedantpalit10/pruning-and-merging-of-tokens-for-efficient-vl-models-a-review-5fa833a0c7e6"
+  },
+  {
+    source: "Medium",
+    title: "I-JEPA: Self-Supervised Image-Based Learning",
+    blurb: "This article is aimed at discussing the methodology and contributions of a CVPR’23 paper I read very recently and found really interesting.",
+    url: "https://medium.com/@vedantpalit10/i-jepa-an-improved-approach-towards-self-supervised-image-based-learning-f622a5793980"
   },
   {
     source: "WordPress",
-    posts: [
-      { title: "A Newer Perspective towards Evolution", url: "https://thenonexistentpresent.wordpress.com/2023/06/13/a-newer-perspective-towards-evolution/" },
-      { title: "A Bridge between the Past and the Future", url: "https://thenonexistentpresent.wordpress.com/2023/05/27/a-bridge-between-the-past-and-the-future/" },
-      { title: "Rebirth?", url: "https://thenonexistentpresent.wordpress.com/2024/01/06/a-rebirth/" }
-    ]
+    title: "A Newer Perspective towards Evolution",
+    blurb: "In the last post, a major focus was drawn towards the objective of “Adapt to survive”…",
+    url: "https://thenonexistentpresent.wordpress.com/2023/06/13/a-newer-perspective-towards-evolution/"
+  },
+  {
+    source: "WordPress",
+    title: "A Bridge between the Past and the Future",
+    blurb: "Since this is the first official blogpost of the page, let us take a look at how can palaeontology prove to be a key for artificial intelligence development…",
+    url: "https://thenonexistentpresent.wordpress.com/2023/05/27/a-bridge-between-the-past-and-the-future/"
+  },
+  {
+    source: "WordPress",
+    title: "Rebirth?",
+    blurb: "I don’t know what to begin this blog post with. There has been a really long gap between the last time I wrote here and today…",
+    url: "https://thenonexistentpresent.wordpress.com/2024/01/06/a-rebirth/"
   }
 ];

@@ -127,14 +127,16 @@
     return row;
   }
 
+  /* Blog pills: one full-width card per post with its opening lines */
   function blogNode(b) {
-    const row = el("div", "update service-row");
-    row.appendChild(el("span", "date", b.source));
-    const posts = b.posts
-      .map(p => '<a href="' + p.url + '">' + p.title + "</a>")
-      .join('<span class="sep"> · </span>');
-    row.appendChild(el("span", "text", posts));
-    return row;
+    const card = el("a", "blog-card");
+    card.href = b.url;
+    const head = el("span", "blog-head");
+    head.appendChild(el("span", "blog-src", b.source));
+    head.appendChild(el("span", "blog-title", b.title));
+    card.appendChild(head);
+    if (b.blurb) card.appendChild(el("span", "blog-blurb", b.blurb));
+    return card;
   }
 
   const visible = arr => arr.filter(x => !x.hidden);
@@ -149,11 +151,13 @@
 
   function renderBatch() {
     const batch = queue.splice(0, BATCH_SIZE);
-    batch.forEach(item => {
+    batch.forEach((item, i) => {
       const node = item.node();
       node.classList.add("reveal");
+      node.style.transitionDelay = i * 60 + "ms";   // cascade within the batch
       document.getElementById(item.target).appendChild(node);
       requestAnimationFrame(() => requestAnimationFrame(() => node.classList.add("visible")));
+      setTimeout(() => { node.style.transitionDelay = ""; }, i * 60 + 600);
     });
     return batch.length > 0;
   }
@@ -190,23 +194,64 @@
   // Nav: jumping to a section must force-render its items first,
   // since anchors below the fold may not be populated yet.
   function setupNav() {
-    document.querySelectorAll("nav a[href^='#']").forEach(a => {
+    // Position-based scroll spy with a sliding ink bar. A bottom clamp
+    // guarantees the last section (Blogs) activates at page end, even
+    // though the final sections are shorter than a viewport.
+    const links = [...document.querySelectorAll("nav a[href^='#']")];
+    const sections = links.map(a => document.querySelector(a.getAttribute("href")));
+    const ink = el("span", "nav-ink");
+    document.querySelector("nav .container").appendChild(ink);
+    let activeIdx = null;
+
+    // Clicking a nav item pins its highlight until the user scrolls
+    // themselves — otherwise short bottom sections (Service) lose the
+    // highlight to the bottom clamp the moment the jump lands.
+    let lockIdx = null;
+    links.forEach((a, i) => {
       a.addEventListener("click", () => {
-        const section = document.querySelector(a.getAttribute("href"));
+        const section = sections[i];
         if (!section) return;
-        const listId = section.querySelector("[data-list]");
-        if (listId) drainThrough(listId.id);
+        const list = section.querySelector("[data-list]");
+        if (list) drainThrough(list.id);
+        lockIdx = i;
+        setActive(i);
       });
     });
+    ["wheel", "touchstart", "keydown"].forEach(ev =>
+      window.addEventListener(ev, () => { lockIdx = null; }, { passive: true }));
 
-    const spy = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        document.querySelectorAll("nav a").forEach(a =>
-          a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id));
-      });
-    }, { rootMargin: "-40% 0px -55% 0px" });
-    document.querySelectorAll("section[id]").forEach(s => spy.observe(s));
+    function setActive(i) {
+      if (i === activeIdx) return;
+      activeIdx = i;
+      links.forEach((a, j) => a.classList.toggle("active", j === i));
+      if (i < 0) { ink.style.opacity = "0"; return; }
+      ink.style.opacity = "1";
+      ink.style.width = links[i].offsetWidth + "px";
+      ink.style.transform = "translateX(" + links[i].offsetLeft + "px)";
+    }
+
+    function spy() {
+      if (lockIdx !== null) { setActive(lockIdx); return; }
+      const doc = document.documentElement;
+      const atBottom = window.innerHeight + window.scrollY >= doc.scrollHeight - 2;
+      let idx = -1;
+      if (atBottom) {
+        idx = sections.length - 1;
+      } else {
+        const ref = window.scrollY + window.innerHeight * 0.35;
+        sections.forEach((s, i) => { if (s && s.offsetTop <= ref) idx = i; });
+      }
+      setActive(idx);
+    }
+
+    let ticking = false;
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { spy(); ticking = false; });
+    }, { passive: true });
+    window.addEventListener("resize", () => { activeIdx = null; spy(); });
+    spy();
   }
 
   /* Collaborator graph under the portrait: Vedant at the center, coauthors
@@ -584,7 +629,10 @@
     function select(i) {
       current = sorted.indexOf(i);
       items.forEach(j => j.el.classList.toggle("active", j === i));
+      detail.classList.remove("swap");
+      void detail.offsetWidth;                 // restart the crossfade
       detail.innerHTML = '<span class="ax-date">' + i.u.date + "</span> — " + i.u.text;
+      detail.classList.add("swap");
       prev.disabled = current === 0;
       next.disabled = current === sorted.length - 1;
     }
@@ -903,9 +951,18 @@
   function setupThemeToggle() {
     document.getElementById("theme-toggle").addEventListener("click", () => {
       const root = document.documentElement;
+      root.classList.add("theme-fade");        // page-wide crossfade
       const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
+      setTimeout(() => root.classList.remove("theme-fade"), 450);
+
+      const critter = document.getElementById("critter");
+      if (critter) {                           // Luma hops at dawn and dusk
+        critter.classList.remove("hop");
+        void critter.offsetWidth;
+        critter.classList.add("hop");
+      }
     });
   }
 
