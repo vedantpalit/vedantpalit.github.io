@@ -584,11 +584,13 @@
   /* Horizontal axis: dots placed by real date, year ticks, and a fixed
      detail line that fills on hover/tap. Height stays constant forever. */
   function setupUpdatesAxis() {
+    const RECENT_COUNT = 8;   // older updates slide out of the axis entirely
     const list = document.getElementById("updates-list");
     list.classList.remove("timeline");
     const MONTHS = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, June: 5,
                      Jul: 6, July: 6, Aug: 7, Sep: 8, Sept: 8, Oct: 9, Nov: 10, Dec: 11 };
-    const items = visible(UPDATES).map(u => {
+    // UPDATES is newest-first, so slicing the front keeps the recent window
+    const items = visible(UPDATES).slice(0, RECENT_COUNT).map(u => {
       const m = u.date.match(/^(\w+)\s+'(\d\d)/);
       return { u, t: new Date(2000 + Number(m[2]), MONTHS[m[1]] || 0, 1).getTime() };
     });
@@ -679,8 +681,8 @@
     const NS = "http://www.w3.org/2000/svg";
 
     const sent = el("div", "ioi-sent",
-      'When <span class="io">Mary</span> and <span class="s">John</span> went to the store, ' +
-      '<span class="s">John</span> gave a drink to <span class="blank">___</span>');
+      'Vedant loves <span class="io">anime</span> and <span class="s">soccer</span>; ' +
+      'after <span class="s">soccer</span>, he unwinds with <span class="blank">___</span>');
 
     const svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 220 132");
@@ -758,8 +760,8 @@
       bars.appendChild(row);
       return { fill, pct };
     };
-    const maryBar = mkBar("Mary", "mary");
-    const johnBar = mkBar("John", "john");
+    const maryBar = mkBar("anime", "mary");
+    const johnBar = mkBar("soccer", "john");
 
     const alive = arr => arr.filter(h => !h.dead).length / arr.length;
 
@@ -776,7 +778,7 @@
       const margin = nm * (1.35 * sih - 0.35);
       const pMary = Math.round(50 + 44 * margin);
 
-      outText.textContent = pMary >= 55 ? "Mary" : pMary <= 45 ? "John" : "?";
+      outText.textContent = pMary >= 55 ? "anime" : pMary <= 45 ? "soccer" : "?";
       outText.setAttribute("class", "ioi-out " +
         (pMary >= 55 ? "om" : pMary <= 45 ? "oj" : "ou"));
 
@@ -798,20 +800,20 @@
       if (h.type === "nm" && !h.backup && !backup.dead)
         return "name mover " + h.id + " patched — backup 10.10 picks up the slack";
       if (groups.nm.heads.every(x => x.dead))
-        return "no name movers left — nothing copies “Mary” to the output";
+        return "no name movers left — nothing copies “anime” to the output";
       if (h.backup && primaries.every(x => x.dead))
         return "backup gone too — the prediction collapses";
       if (h.type === "si")
-        return "S-inhibition weakened — less stops the model repeating “John”";
+        return "S-inhibition weakened — less stops the model repeating “soccer”";
       if (h.type === "dt")
         return "duplicate-token head gone — induction heads (not shown) still spot the repeat";
       return "head " + h.id + " patched";
     }
 
     const ROLES = {
-      dt: "notices “John” appears twice",
-      si: "tells the name movers to steer away from “John”",
-      nm: "copies “Mary” into the prediction",
+      dt: "notices “soccer” appears twice",
+      si: "tells the name movers to steer away from “soccer”",
+      nm: "copies “anime” into the prediction",
       bk: "backup — wakes up if a name mover is patched"
     };
 

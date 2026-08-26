@@ -24,7 +24,7 @@ const SITE = {
   bio: [
     'I am a researcher based in Tübingen, Germany, at the <a href="https://is.mpg.de/ei">Empirical Inference department</a> of the Max Planck Institute for Intelligent Systems, where I work with <a href="https://is.mpg.de/~bs">Dr. Bernhard Schölkopf</a> and, jointly, with <a href="https://zhijing-jin.com/home/">Dr. Zhijing Jin</a> of the Jinesis Lab (University of Toronto &amp; Vector Institute). I recently graduated from <a href="https://www.iitkgp.ac.in/">IIT Kharagpur</a> with a BTech in Industrial &amp; Systems Engineering and an MTech in Financial Engineering.',
     'I am interested in machine and deep learning, particularly in the interpretability of AI models. I have been working primarily on mechanistic interpretability and its application in developing models with improved and trustworthy reasoning capabilities. During my undergrad, I had the opportunity to work with <a href="https://debabrota-basu.github.io/">Dr. Debabrota Basu</a> at University of Lille, members of <a href="https://health-nlp.com/people/carsten">Dr. Carsten Eickhoff</a>’s and <a href="https://ritambharasingh.com/">Dr. Ritambhara Singh</a>’s groups at the University of Tübingen and Brown University, and <a href="https://manasgaur.github.io/">Dr. Manas Gaur</a> at UMBC.',
-    'I also enjoy quizzing, reading science fiction books and watching anime and movies of almost every genre.',
+    'Outside research, I enjoy quizzing, reading science fiction, and watching soccer, along with anime and films of almost every genre.',
     'Feel free to drop me an e-mail if you want to chat with me!'
   ],
   links: [
@@ -45,6 +45,8 @@ const SITE = {
 /* type colors the timeline dot: paper (red), position (blue),
    award (amber), milestone (gray) */
 const UPDATES = [
+  { date: "Aug '26", type: "paper", text: "Our paper <strong>“How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution”</strong> has been accepted to <strong>EMNLP 2026</strong>." },
+  { date: "Aug '26", type: "paper", text: "Our paper <strong>“CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs”</strong> has been accepted to the <strong>EMNLP 2026 Demo Track</strong>." },
   { date: "Jul '26", type: "position", text: "Started as a <strong>Guest Researcher</strong> at the <strong>Max Planck Institute for Intelligent Systems, Tübingen</strong>." },
   { date: "Jun '26", type: "award", text: "Our paper <strong>“Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics”</strong> received a <strong>Spotlight at ECAF 2026</strong> (extended abstract) and was accepted to the <strong>ICML AI4LAW Workshop 2026</strong>." },
   { date: "Jan '26", type: "position", text: "Started as a <strong>Researcher</strong> at the <strong>Jinesis Lab, University of Toronto and Vector Institute</strong>." },
@@ -66,6 +68,7 @@ const PAPERS = [
     title: "How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution",
     image: "images/anchor.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Terry Jingchen Zhang, Bernhard Schölkopf, Zhijing Jin",
+    badges: [{ label: "EMNLP 2026", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/concept-targeted-attribution" },
       { label: "Paper", url: "https://github.com/vedantpalit/concept-targeted-attribution/blob/main/ConceptProbeAttribution.pdf" }
@@ -88,10 +91,7 @@ const PAPERS = [
     title: "CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs",
     image: "images/clt-forge.png",
     authors: "Florent Draye, <strong>Vedant Palit</strong>, Abir Harrasse, Tung-Yu Wu, Jiarui Liu, Punya Syon Pandey, Roderick Wu, Chih-Hao Hsu, Terry Jingchen Zhang, Zhijing Jin, Bernhard Schölkopf",
-    badges: [
-      { label: "Under Review", tone: "review" },
-      { label: "EMNLP Demo Track 2026", tone: "acl" }
-    ],
+    badges: [{ label: "EMNLP Demo Track 2026", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/LLM-Interp/CLT-Forge" },
       { label: "Paper", url: "https://arxiv.org/abs/2603.21014" }
