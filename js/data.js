@@ -65,6 +65,15 @@ const UPDATES = [
 
 const PAPERS = [
   {
+    title: "When Forgetting is not Catastrophic: On the Mechanics of Spurious Forgetting",
+    image: "images/fig1_x.png",
+    authors: "<strong>Vedant Palit</strong>, Florent Draye, Nicolas Zucchet, Zhijing Jin, Bernhard Schölkopf",
+    links: [
+      { label: "Repo", url: "https://github.com/vedantpalit/spurious-forgetting-mechanics" },
+      { label: "Paper", url: "https://arxiv.org/abs/2610.08718" }
+    ]
+  },
+  {
     title: "How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution",
     image: "images/anchor.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Terry Jingchen Zhang, Bernhard Schölkopf, Zhijing Jin",
