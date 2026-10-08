@@ -181,6 +181,7 @@ const PAPERS = [
 
 const PROJECTS = [
   {
+    hidden: true,
     title: "Knowledge Graph Generation from Scraped Text",
     image: "images/kgscreen.png",
     context: "AIISC Project",
@@ -188,6 +189,7 @@ const PROJECTS = [
     description: "Created an automated text extraction system, for custom information extraction from an input wikipedia page followed by entity generation through parsing, named entity correlation and KG generation."
   },
   {
+    hidden: true,
     title: "Image Stitching and RANSAC Line Fitting",
     image: "images/foto1_stitched.png",
     context: "Task for Autonomous Ground Vehicles Group, IIT KGP",
@@ -195,6 +197,7 @@ const PROJECTS = [
     description: "Constructed a pipeline of the image stitching through brute-force matching as well as KNN Association of keypoints in two images of the same scene taken from close yet different angles."
   },
   {
+    hidden: true,
     title: "Kalman Filter Trajectory Determination",
     image: "images/Trajectory_Superposition.png",
     context: "Task for Autonomous Ground Vehicles Group, IIT KGP",

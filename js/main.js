@@ -74,15 +74,39 @@
   }
 
 
+  /* Full-size figure for a paper, in a modal <dialog>.
+     Esc closes natively; clicking the backdrop or the × also closes. */
+  let lightbox = null;
+  function openLightbox(item) {
+    if (!lightbox) {
+      lightbox = el("dialog", "lightbox");
+      lightbox.addEventListener("click", e => { if (e.target === lightbox) lightbox.close(); });
+      lightbox.addEventListener("close", () => { lightbox.innerHTML = ""; });
+      document.body.appendChild(lightbox);
+    }
+    const close = el("button", "lightbox-close", "×");
+    close.type = "button";
+    close.setAttribute("aria-label", "Close");
+    close.addEventListener("click", () => lightbox.close());
+    const img = el("img");
+    img.src = item.image;
+    img.alt = item.title;
+    lightbox.append(close, img, el("div", "lightbox-caption", item.title));
+    lightbox.showModal();
+  }
+
   function entryNode(item) {
     const row = el("div", "entry");
     if (item.image) {
-      const thumb = el("div", "thumb");
+      const thumb = el("button", "thumb");
+      thumb.type = "button";
+      thumb.setAttribute("aria-label", "Enlarge figure: " + item.title);
       const img = el("img");
       img.src = item.image;
-      img.alt = item.title;
+      img.alt = "";
       img.loading = "lazy";
       thumb.appendChild(img);
+      thumb.addEventListener("click", () => openLightbox(item));
       row.appendChild(thumb);
     }
 
