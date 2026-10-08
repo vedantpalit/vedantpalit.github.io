@@ -17,8 +17,7 @@ const SITE = {
      Keep org names short so rows fit the portrait width; put the
      full name in title (shown on hover). Empty array hides the block. */
   current: [
-    { role: "Guest Researcher", org: "MPI for Intelligent Systems, EI", url: "https://is.mpg.de/ei", title: "Max Planck Institute for Intelligent Systems, Empirical Inference Department" },
-    { role: "Research Lead", org: "EuroSafe AI", url: "https://safe.eu/team" },
+    { role: "Pre-PhD Researcher", org: "MPI for Intelligent Systems, EI", url: "https://is.mpg.de/ei", title: "Max Planck Institute for Intelligent Systems, Empirical Inference Department" },
     { role: "Researcher", org: "Jinesis Lab, UofT", url: "https://zhijing-jin.com/home/", title: "Jinesis Lab, University of Toronto" }
   ],
   bio: [
@@ -47,8 +46,8 @@ const SITE = {
 const UPDATES = [
   { date: "Aug '26", type: "paper", text: "Our paper <strong>“How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution”</strong> has been accepted to <strong>EMNLP 2026</strong>." },
   { date: "Aug '26", type: "paper", text: "Our paper <strong>“CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs”</strong> has been accepted to the <strong>EMNLP 2026 Demo Track</strong>." },
-  { date: "Jul '26", type: "position", text: "Started as a <strong>Guest Researcher</strong> at the <strong>Max Planck Institute for Intelligent Systems, Tübingen</strong>." },
-  { date: "Jun '26", type: "award", text: "Our paper <strong>“Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics”</strong> received a <strong>Spotlight at ECAF 2026</strong> (extended abstract) and was accepted to the <strong>ICML AI4LAW Workshop 2026</strong>." },
+  { date: "Jul '26", type: "position", text: "Started as a <strong>Pre-PhD Researcher</strong> at the <strong>Max Planck Institute for Intelligent Systems, Tübingen</strong>." },
+  { date: "Jun '26", type: "award", text: "Our paper <strong>“Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics”</strong> received a <strong>Spotlight at EWAF 2026</strong> (extended abstract) and was accepted to the <strong>ICML AI4LAW Workshop 2026</strong>." },
   { date: "Jan '26", type: "position", text: "Started as a <strong>Researcher</strong> at the <strong>Jinesis Lab, University of Toronto and Vector Institute</strong>." },
   { date: "Jul '25", type: "position", text: "Interned at <strong>JP Morgan and Chase</strong> in the Model Risk and Governance Review Division from May to July 2025." },
   { date: "May '25", type: "paper", text: "Our paper <strong>“Forgotten Polygons: Multimodal Large Language Models are Shape-Blind”</strong> has been accepted to <strong>ACL Findings 2025</strong>." },
@@ -88,7 +87,7 @@ const PAPERS = [
     image: "images/eutopia.png",
     authors: "<strong>Vedant Palit</strong>, Udvas Das, Brahim Driss, Debabrota Basu",
     badges: [
-      { label: "ECAF 2026 · Spotlight", tone: "award" },
+      { label: "EWAF 2026 · Spotlight", tone: "award" },
       { label: "ICML AI4LAW Workshop 2026", tone: "neurips" }
     ],
     links: [
