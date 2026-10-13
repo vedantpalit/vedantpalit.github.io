@@ -79,7 +79,7 @@ const PAPERS = [
     badges: [{ label: "EMNLP 2026", tone: "acl" }],
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/concept-targeted-attribution" },
-      { label: "Paper", url: "https://github.com/vedantpalit/concept-targeted-attribution/blob/main/ConceptProbeAttribution.pdf" }
+      { label: "Paper", url: "https://arxiv.org/abs/2608.27510" }
     ]
   },
   {
@@ -92,7 +92,7 @@ const PAPERS = [
     ],
     links: [
       { label: "Repo", url: "https://github.com/brahimdriss/LoanSimulator" },
-      { label: "Paper", url: "https://github.com/brahimdriss/LoanSimulator/blob/main/Eutopia_2026.pdf" }
+      { label: "Paper", url: "https://arxiv.org/abs/2607.19389" }
     ]
   },
   {
