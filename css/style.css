@@ -1,16 +1,18 @@
-/* Two themes: light, and a dark mode built on a near-black Prussian blue.
+/* Two themes: light (white, teal links with red details), and a matching dark mode on a cool near-black
+   (light teal links, coral details).
    The active theme is set as data-theme on <html> (see inline script in index.html). */
 
 :root {
-  --bg: #f8f0e6;
-  --bg-soft: #efe4d3;
-  --nav-bg: rgba(248, 240, 230, 0.85);
-  --text: #3d3931;
-  --text-strong: #1c1a17;
-  --muted: #7d7264;
-  --accent: #9c4227;
-  --accent-hover: #b5762e;
-  --rule: #e6d8c4;
+  --bg: #ffffff;
+  --bg-soft: #f5f5f3;
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --text: #3a3a37;
+  --text-strong: #111111;
+  --muted: #6b6b67;
+  --accent: #0f6e6e;
+  --accent-hover: #0a5555;
+  --highlight: #c8372d;     /* red details: nav underline, dates, widget bar */
+  --rule: #ebebe8;
   --max-width: 700px;
 
   /* Luma, awake (warm daytime palette) */
@@ -24,17 +26,18 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #171614;
-  --bg-soft: #211f1c;
-  --nav-bg: rgba(23, 22, 20, 0.85);
-  --text: #cfc9bd;
-  --text-strong: #ece7dc;
-  --muted: #948c7c;
-  --accent: #d99e5b;
-  --accent-hover: #eac489;
-  --rule: #2e2b26;
+  --bg: #121517;
+  --bg-soft: #1b1f22;
+  --nav-bg: rgba(18, 21, 23, 0.85);
+  --text: #c9ced2;
+  --text-strong: #eceff1;
+  --muted: #8a9399;
+  --accent: #5fc2b8;
+  --accent-hover: #8fd8cf;
+  --highlight: #f07c6f;
+  --rule: #272c30;
 
-  /* Luma, asleep (moonlit plum, warm to match the charcoal) */
+  /* Luma, asleep (moonlit plum) */
   --cr-o: #121110;
   --cr-b: #524a5e;
   --cr-l: #645b72;
@@ -144,7 +147,7 @@ nav .container {
   height: 2px;
   width: 0;
   border-radius: 2px;
-  background-color: var(--accent);
+  background-color: var(--highlight);
   opacity: 0;
   transition: transform 0.3s ease, width 0.3s ease, opacity 0.2s ease;
 }
@@ -159,29 +162,6 @@ nav a {
 
 nav a:hover,
 nav a.active { color: var(--text-strong); }
-
-/* Theme toggle: moon shown in light mode, sun in dark mode */
-
-#theme-toggle {
-  margin-left: auto;
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  transition: color 0.2s ease, transform 0.1s ease;
-}
-
-#theme-toggle:hover { color: var(--text-strong); }
-
-#theme-toggle svg { width: 18px; height: 18px; }
-
-#theme-toggle .icon-sun { display: none; }
-
-:root[data-theme="dark"] #theme-toggle .icon-sun { display: block; }
-:root[data-theme="dark"] #theme-toggle .icon-moon { display: none; }
 
 /* Luma, the day/night pixel familiar on the nav */
 
@@ -315,13 +295,44 @@ header { padding: 64px 0 16px; }
   display: block;
 }
 
-.profile-links {
-  margin-top: 22px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  font-size: 14px;
+/* Profile links: a two-column list under the pixel world, labelled like "Currently" */
+.links-label {
+  margin-top: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rule);
 }
+
+.profile-links {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  font-size: 13.5px;
+}
+
+.profile-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-image: none;
+}
+
+.profile-links a:hover { color: var(--accent-hover); }
+
+.link-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.profile-links a:hover .link-icon { color: inherit; }
 
 /* Multi-option profile link (e.g. Email → MPI / UofT) */
 
@@ -514,6 +525,37 @@ header { padding: 64px 0 16px; }
 
 /* IOI path-patching toy under the portrait */
 
+/* Pixel world under the portrait (see buildWorldWidget) */
+.world-widget { margin-top: 20px; }
+
+.world-widget canvas {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.world-cap {
+  margin-top: 6px;
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--muted);
+}
+
+.world-toggle {
+  border: none;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.world-toggle:hover { color: var(--accent-hover); text-decoration: underline; }
+
 .ioi-widget { margin-top: 18px; }
 
 .ioi-widget svg {
@@ -623,7 +665,7 @@ header { padding: 64px 0 16px; }
   transition: width 0.45s ease;
 }
 
-.ioi-fill.mary { background-color: var(--accent); }
+.ioi-fill.mary { background-color: var(--highlight); }
 .ioi-fill.john { background-color: #5b6e85; }
 
 :root[data-theme="dark"] .ioi-fill.john { background-color: #90a2b5; }
@@ -673,6 +715,21 @@ section h2 {
   letter-spacing: 0.01em;
   border-bottom: 1px solid var(--rule);
   padding-bottom: 8px;
+}
+
+/* Section heading with a link on the right (Selected Papers → All papers) */
+section h2.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.head-link {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 /* Updates axis: horizontal line, dots by date, hover detail below */
@@ -784,7 +841,7 @@ section h2 {
 }
 
 .ax-detail .ax-date {
-  color: var(--accent);
+  color: var(--highlight);
   font-weight: 600;
   font-size: 13px;
 }
@@ -822,11 +879,11 @@ section h2 {
   box-shadow: 0 0 0 3px var(--bg);
 }
 
-.t-paper    { --dot: #b02a37; }
-.t-position { --dot: #5b6e85; }
-.t-award    { --dot: #d99a2b; }
+.t-paper    { --dot: #b42318; }
+.t-position { --dot: #475467; }
+.t-award    { --dot: #dc8a0e; }
 
-:root[data-theme="dark"] .t-paper    { --dot: #f28b82; }
+:root[data-theme="dark"] .t-paper    { --dot: #f07c6f; }
 :root[data-theme="dark"] .t-position { --dot: #90a2b5; }
 :root[data-theme="dark"] .t-award    { --dot: #f0b866; }
 
@@ -906,7 +963,7 @@ section h2 {
 .update .date {
   flex-shrink: 0;
   width: 62px;
-  color: var(--accent);
+  color: var(--highlight);
   font-weight: 600;
   font-size: 13px;
   padding-top: 2px;
@@ -930,32 +987,29 @@ section h2 {
 
 .entry:last-child { border-bottom: none; }
 
-/* Every thumbnail sits in the same frame, so titles share one left edge
-   whatever the figure's shape. Clicking opens the full figure. */
+/* Every thumbnail takes the same invisible slot, so titles share one left
+   edge whatever the figure's shape; figures sit on the page background,
+   top-aligned with the title. Clicking opens the full figure. */
 .entry .thumb {
   flex-shrink: 0;
-  width: 170px;
-  height: 120px;
-  padding: 8px;
+  width: 220px;
+  height: 150px;
+  padding: 0;
   border: none;
-  border-radius: 10px;
-  background-color: var(--bg-soft);
+  background: none;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   cursor: zoom-in;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
-.entry .thumb:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
+.entry .thumb:hover { transform: translateY(-2px); }
 
 .entry .thumb img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 5px;
+  border-radius: 4px;
   display: block;
 }
 
@@ -1022,7 +1076,7 @@ section h2 {
   margin-bottom: 6px;
 }
 
-/* Venue pills, colored by venue family (amber = spotlight/award) */
+/* Venue pills, colored by venue family */
 
 .badges {
   margin: 2px 0 7px;
@@ -1041,21 +1095,21 @@ section h2 {
   white-space: nowrap;
 }
 
-.pill-acl     { color: #b02a37; background-color: rgba(214, 43, 43, 0.09); }
-.pill-neurips { color: #6f42c1; background-color: rgba(111, 66, 193, 0.09); }
-.pill-ieee    { color: #1766c2; background-color: rgba(23, 102, 194, 0.09); }
-.pill-acm     { color: #0f766e; background-color: rgba(15, 118, 110, 0.09); }
-.pill-cvf     { color: #2e7d32; background-color: rgba(46, 125, 50, 0.09); }
-.pill-review  { color: #6e7681; background-color: rgba(110, 118, 129, 0.11); }
-.pill-award   { color: #a16207; background-color: rgba(240, 184, 102, 0.16); }
+.pill-acl     { color: #8a4f5e; background-color: #f8eff2; }
+.pill-neurips { color: #6941c6; background-color: #f4f3ff; }
+.pill-ieee    { color: #175cd3; background-color: #eff8ff; }
+.pill-acm     { color: #7a5c2e; background-color: #f7f1e7; }
+.pill-cvf     { color: #4f7a28; background-color: #f3f8ec; }
+.pill-review  { color: #475467; background-color: #f2f4f7; }
+.pill-ewaf    { color: #1d6fa5; background-color: #ebf4fa; }
 
-:root[data-theme="dark"] .pill-acl     { color: #f28b82; background-color: rgba(242, 139, 130, 0.12); }
+:root[data-theme="dark"] .pill-acl     { color: #e3a5b4; background-color: rgba(227, 165, 180, 0.12); }
 :root[data-theme="dark"] .pill-neurips { color: #c5a3ff; background-color: rgba(197, 163, 255, 0.12); }
 :root[data-theme="dark"] .pill-ieee    { color: #8ab4f8; background-color: rgba(138, 180, 248, 0.12); }
-:root[data-theme="dark"] .pill-acm     { color: #7fd8ce; background-color: rgba(127, 216, 206, 0.12); }
+:root[data-theme="dark"] .pill-acm     { color: #d9b98a; background-color: rgba(217, 185, 138, 0.12); }
 :root[data-theme="dark"] .pill-cvf     { color: #a5d6a7; background-color: rgba(165, 214, 167, 0.12); }
 :root[data-theme="dark"] .pill-review  { color: #8a95a3; background-color: rgba(138, 149, 163, 0.13); }
-:root[data-theme="dark"] .pill-award   { color: #f0b866; background-color: rgba(240, 184, 102, 0.13); }
+:root[data-theme="dark"] .pill-ewaf    { color: #7cc0eb; background-color: rgba(124, 192, 235, 0.12); }
 
 .entry .description {
   font-size: 14px;
@@ -1065,6 +1119,60 @@ section h2 {
 .entry .links { font-size: 14px; }
 
 .entry .links a + a::before {
+  content: "/";
+  color: var(--muted);
+  margin: 0 8px 0 0;
+  padding-left: 8px;
+}
+
+/* Full publication list (publications.html) */
+
+.pubs-page { padding-top: 34px; }
+
+.pub-note {
+  margin: -8px 0 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.pub-year {
+  margin: 26px 0 2px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+.pub {
+  padding: 10px 0 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.pub:last-child { border-bottom: none; }
+
+.pub .title {
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.pub .title:hover { color: var(--accent); }
+
+.pub .authors {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.pub-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.pub .links a + a::before {
   content: "/";
   color: var(--muted);
   margin: 0 8px 0 0;
@@ -1190,15 +1298,17 @@ footer {
 @media (max-width: 640px) {
   header { padding-top: 40px; }
 
-  .intro { flex-direction: column-reverse; align-items: center; }
+  .intro { flex-direction: column; align-items: center; }   /* name and bio first */
 
-  .portrait { width: 200px; margin-top: 0; }
+  .portrait { width: 220px; max-width: 100%; margin-top: 8px; }
 
   .intro h1 { text-align: center; }
 
   .entry { flex-direction: column; gap: 12px; }
 
-  .entry .thumb { width: 100%; height: 170px; }
+  .entry .thumb { width: 100%; height: auto; }
+
+  .entry .thumb img { max-height: 200px; }
 
   .update { flex-direction: column; gap: 2px; }
 

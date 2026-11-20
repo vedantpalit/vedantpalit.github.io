@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Publications · Vedant Palit</title>
+    <meta name="author" content="Vedant Palit">
+    <meta name="description" content="Publications by Vedant Palit.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" sizes="48x48">
+    <link rel="icon" href="images/favicon.png" type="image/png" sizes="192x192">
+    <script>
+      /* Set theme before first paint to avoid a flash of the wrong mode */
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body data-page="publications">
+    <nav>
+      <div class="container">
+        <a href="index.html#updates">Updates</a>
+        <a href="index.html#research">Research</a>
+        <a href="index.html#service">Service</a>
+        <a href="index.html#blogs">Blogs</a>
+      </div>
+    </nav>
+
+    <main class="container pubs-page">
+      <section id="publications">
+        <h2 class="section-head">
+          <span>Publications</span>
+          <a href="#" id="scholar-link" class="head-link">Google Scholar ↗</a>
+        </h2>
+        <p class="pub-note">* equal contribution</p>
+        <div id="pubs-list"></div>
+      </section>
+    </main>
+
+    <footer class="container">
+      Vedant Palit
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

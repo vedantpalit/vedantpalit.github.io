@@ -1,13 +1,16 @@
 /* All site content lives here. To add an entry, append an object to the
    relevant array — the page renders everything in js/main.js.
-   Set hidden: true on any entry to keep it in the file but off the page. */
+   Set hidden: true on any entry to keep it in the file but off the page.
+   Papers: selected: true also shows the paper on the homepage; every
+   visible paper is listed on publications.html, grouped by year (taken
+   from the venue label, or from year: for papers without one). */
 
 const SITE = {
   name: "Vedant Palit",
   photo: "images/vp_c.jpg",
   photoFull: "images/vp.jpg",
-  /* Which toy to show under the portrait: "ioi", "attention" or "collab" */
-  widget: "ioi",
+  /* Which toy to show under the portrait: "world", "ioi", "attention" or "collab" */
+  widget: "world",
   /* Updates layout: "axis" (horizontal) or "timeline" (vertical, collapsible years) */
   updates: "axis",
   /* Default sentence for the attention toy (visitors can type their own) */
@@ -64,7 +67,9 @@ const UPDATES = [
 
 const PAPERS = [
   {
+    selected: true,
     title: "When Forgetting is not Catastrophic: On the Mechanics of Spurious Forgetting",
+    year: 2026,
     image: "images/fig1_x.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Nicolas Zucchet, Zhijing Jin, Bernhard Schölkopf",
     links: [
@@ -73,6 +78,7 @@ const PAPERS = [
     ]
   },
   {
+    selected: true,
     title: "How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution",
     image: "images/anchor.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Terry Jingchen Zhang, Bernhard Schölkopf, Zhijing Jin",
@@ -83,11 +89,12 @@ const PAPERS = [
     ]
   },
   {
+    selected: true,
     title: "Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics",
     image: "images/eutopia.png",
     authors: "<strong>Vedant Palit</strong>, Udvas Das, Brahim Driss, Debabrota Basu",
     badges: [
-      { label: "EWAF 2026 · Spotlight", tone: "award" },
+      { label: "EWAF 2026 · Spotlight", tone: "ewaf" },
       { label: "ICML AI4LAW Workshop 2026", tone: "neurips" }
     ],
     links: [
@@ -136,6 +143,7 @@ const PAPERS = [
     ]
   },
   {
+    selected: true,
     title: "Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP",
     image: "images/mechinterpvl.png",
     authors: "<strong>Vedant Palit*</strong>, Rohan Pandey*, Aryaman Arora, Paul Pu Liang",

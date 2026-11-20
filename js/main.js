@@ -36,17 +36,31 @@
       if (l.options) {
         links.appendChild(dropdownLink(l));
       } else {
-        const a = el("a", null, l.label);
+        const a = el("a", null, linkIcon(l.label) + l.label);
         a.href = l.url;
         links.appendChild(a);
       }
     });
   }
 
+  // Small line icons for the profile links (GitHub mark from Feather Icons, MIT)
+  const LINK_ICONS = {
+    Email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+    CV: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+    Scholar: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    Blog: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+    GitHub: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>'
+  };
+  function linkIcon(label) {
+    const d = LINK_ICONS[label];
+    return d ? '<svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+      ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>' : "";
+  }
+
   /* A profile link with multiple choices, shown in a small popover on click */
   function dropdownLink(l) {
     const wrap = el("span", "dropdown");
-    const trigger = el("a", null, l.label + ' <span class="caret">▾</span>');
+    const trigger = el("a", null, linkIcon(l.label) + l.label + ' <span class="caret">▾</span>');
     trigger.href = "#";
     const menu = el("span", "dropdown-menu");
     l.options.forEach(o => {
@@ -168,7 +182,7 @@
   // One flat queue of items in page order; each knows its target container.
   // (Updates render separately as collapsible year groups, see setupUpdates.)
   const queue = [];
-  visible(PAPERS).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
+  visible(PAPERS).filter(p => p.selected).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
   visible(PROJECTS).forEach(p => queue.push({ target: "projects-list", node: () => projectNode(p) }));
   visible(SERVICE).forEach(s => queue.push({ target: "service-list", node: () => serviceNode(s) }));
   visible(BLOGS).forEach(b => queue.push({ target: "blogs-list", node: () => blogNode(b) }));
@@ -698,6 +712,355 @@
      duplicate-token heads feed S-inhibition, S-inhibition steers the name
      movers away from "John", and a backup name mover compensates when a
      primary one is ablated. */
+  /* Pixel Tübingen under the portrait: the Neckarfront (castle hill, gabled
+     houses, the Hölderlin tower, the river with a punt) and a riverbank
+     promenade where Luma wanders by day and sleeps by night. Drawn per pixel
+     on a 73×52 canvas shown at 3×; the sun/moon toggles the site theme, and
+     the caption says so. */
+  function buildWorldWidget() {
+    const host = document.getElementById("widget");
+    if (!host) return;
+    host.className = "world-widget";
+
+    const W = 73, H = 52, SCALE = 3;
+    const canvas = el("canvas");
+    canvas.width = W; canvas.height = H;
+    canvas.style.width = W * SCALE + "px";
+    canvas.setAttribute("role", "img");
+    canvas.setAttribute("aria-label", "Pixel-art Tübingen riverfront where Luma the cat strolls");
+    const cap = el("div", "world-cap");
+    host.append(canvas, cap);
+    const ctx = canvas.getContext("2d");
+    const img = ctx.createImageData(W, H);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const PAL = {
+      day: {
+        skyTop: "#a8d3f3", skyBot: "#dcf0fc", sun: "#f7c948", sunHi: "#fde68a", cloud: "#ffffff", cloudSh: "#e3eff9",
+        hill: "#6f9f58", hillLo: "#557f44", hillHi: "#88b56c",
+        castle: "#e4ddcf", castleLo: "#bdb3a2", roof: "#b04a32", roofLo: "#8c3a28",
+        window: "#3b4252", door: "#5a4636", timber: "#6b4a33",
+        tower: "#efc75e", towerLo: "#d7a93f", cone: "#5d3b2e",
+        wall: "#b9ae9b", mortar: "#958a7a",
+        water: "#5b8fb9", waterLo: "#4a7aa3", waterHi: "#9cc6e6",
+        hull: "#6b4a2b", poler: "#2f5d8a", skin: "#e0b48a", pole: "#8a6a45",
+        bankEdge: "#4f8a3c", grass: "#78b45e", path: "#d9c39b", pathLo: "#c4ab80", pebble: "#a8957a",
+        lampPost: "#3f4146", lampOff: "#e8e2c8"
+      },
+      night: {
+        skyTop: "#0c1730", skyBot: "#1d2c50", moon: "#f3efd6", moonLo: "#cfc8a8", star: "#ffffff", starLo: "#8fa3c8",
+        hill: "#22392f", hillLo: "#1a2c24", hillHi: "#2b473a",
+        castle: "#4a4a55", castleLo: "#3a3a44", roof: "#4d2a24", roofLo: "#3b201c",
+        window: "#1c2233", lit: "#ffd36e", litLo: "#e8a948", door: "#2a2220", timber: "#2b211b",
+        tower: "#6b5a35", towerLo: "#57492b", cone: "#2a1d18",
+        wall: "#4a4640", mortar: "#3a3631",
+        water: "#1f3655", waterLo: "#182b45", waterHi: "#36557d",
+        hull: "#3a2a1c", poler: "#22344c", skin: "#8a6f58", pole: "#4a3a28",
+        bankEdge: "#203a2c", grass: "#2c4a3a", path: "#4f4738", pathLo: "#433c30", pebble: "#5a5245",
+        lampPost: "#26282c", lampOn: "#ffe08a", glow: "#7a6a3e"
+      }
+    };
+    // House facades along the Neckar (pastel by day, dimmed by night)
+    const FACADES = ["#f4e1a6", "#f2b8a2", "#cfe0e8", "#f6f1e7", "#e9c46a", "#c9dcb3", "#e8b4c4", "#d9c2a5"];
+    const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+    const dim = c => [c[0] * 0.3 + 10, c[1] * 0.3 + 14, c[2] * 0.3 + 30].map(Math.round);
+    const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+
+    // Deterministic per-pixel noise and a 4×4 Bayer matrix for dithering
+    const hash = (x, y) => { const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); };
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(v => (v + 0.5) / 16);
+    const bayer = (x, y) => BAYER[(y & 3) * 4 + (x & 3)];
+
+    // Layout rows
+    const BASE = 29;                  // first row of the river wall (houses stand on it)
+    const WATER = 32, BANK = 39;      // river rows WATER..BANK-1, promenade below
+    const CAT_TOP = 40;
+    const hillTop = x => Math.round(11 + 3.5 * Math.sin(x / 11 + 0.6) + 1.2 * Math.sin(x / 4.1));
+    // x, width, top of facade wall, facade colour index, timber-framed?
+    const HOUSES = [[0, 7, 18, 0, 0], [7, 6, 20, 1, 1], [13, 8, 16, 2, 0], [21, 6, 19, 3, 1], [27, 7, 17, 4, 0],
+                    [34, 6, 20, 5, 0], [40, 8, 16, 6, 1], [48, 7, 18, 7, 0], [64, 9, 19, 3, 1]];
+    const TOWER = { x: 56, w: 8, top: 13 };
+    const LAMPS = [20, 50];
+    const SUN = { x: 9, y: 6 };
+
+    let mode = "day", P = PAL.day, bg = null, skyMask = null, litMask = null, luma = {};
+
+    function lumaColors() {
+      const cs = getComputedStyle(document.documentElement);
+      ["o", "b", "l", "e", "w", "k"].forEach(k => { luma[k] = rgb(cs.getPropertyValue("--cr-" + k).trim() || "#000000"); });
+    }
+
+    function buildBackdrop() {
+      bg = new Array(W * H);
+      skyMask = new Uint8Array(W * H);
+      litMask = new Uint8Array(W * H);
+      const C = {};
+      Object.keys(P).forEach(k => { C[k] = rgb(P[k]); });
+      const night = mode === "night";
+      const put = (x, y, c) => { if (x >= 0 && x < W && y >= 0 && y < H) { bg[y * W + x] = c; skyMask[y * W + x] = 0; } };
+
+      // Sky, castle hill, river, promenade
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        const n = hash(x, y), ht = hillTop(x);
+        let c;
+        if (y < ht) {
+          const t = (y / ht - 0.3) / 0.45;
+          c = bayer(x, y) < t ? C.skyBot : C.skyTop;
+          skyMask[y * W + x] = 1;
+        } else if (y < BASE) {
+          c = y === ht ? C.hillHi : n < 0.25 ? C.hillLo : n > 0.9 ? C.hillHi : C.hill;
+        } else if (y < WATER) {
+          c = ((x + (y % 2) * 2) % 4 === 0) ? C.mortar : C.wall;
+        } else if (y < BANK) {
+          c = y > WATER + 6 && bayer(x, y) < 0.5 ? C.waterLo : C.water;
+        } else if (y === BANK) {
+          c = C.bankEdge;
+        } else if (y === BANK + 1) {
+          c = n < 0.3 ? C.bankEdge : C.grass;
+        } else {
+          c = n > 0.94 ? C.pebble : bayer(x, y) < 0.25 ? C.pathLo : C.path;
+        }
+        bg[y * W + x] = c;
+      }
+
+      // Hohentübingen castle on the hill
+      const cx = 27;
+      for (let y = 8; y <= 12; y++) for (let x = cx; x <= cx + 7; x++) put(x, y, x === cx + 7 ? C.castleLo : C.castle);
+      for (let x = cx - 1; x <= cx + 8; x++) put(x, 7, C.roof);
+      for (let x = cx + 1; x <= cx + 6; x++) put(x, 6, C.roofLo);
+      put(cx + 3, 5, C.roofLo); put(cx + 3, 4, C.roofLo);
+      [[cx + 2, 10], [cx + 5, 10]].forEach(([x, y]) => { put(x, y, night ? C.lit : C.window); if (night) litMask[y * W + x] = 1; });
+
+      // Gabled houses: steep roof, window grid, optional timber framing
+      HOUSES.forEach(([hx, w, top, fi, timber], hi) => {
+        const face = rgb(FACADES[fi]), wall = night ? dim(face) : face, shade = mix(wall, [0, 0, 0], 0.12);
+        for (let y = top; y < BASE; y++) for (let x = hx; x < hx + w; x++) put(x, y, x === hx + w - 1 ? shade : wall);
+        const rh = Math.ceil(w / 2) + 1;
+        for (let k = 0; k < rh; k++) {
+          const half = (w / 2) * (k + 1) / rh;
+          for (let x = Math.round(hx + w / 2 - half); x < Math.round(hx + w / 2 + half); x++) {
+            put(x, top - rh + k, (x + k) % 3 === 0 ? C.roofLo : C.roof);
+          }
+        }
+        if (timber) {
+          for (let y = top; y < BASE; y++) { put(hx, y, C.timber); }
+          for (let x = hx; x < hx + w; x++) put(x, top + Math.floor((BASE - top) / 2), C.timber);
+        }
+        for (let y = top + 2; y < BASE - 2; y += 3) {
+          for (let x = hx + 1 + (w % 2 ? 0 : 1) * 0; x < hx + w - 1; x += 2) {
+            if (timber && y === top + Math.floor((BASE - top) / 2)) continue;
+            const on = night && hash(x + hi, y) > 0.55;
+            put(x, y, on ? C.lit : C.window);
+            if (on) litMask[y * W + x] = 1;
+          }
+        }
+        put(hx + Math.floor(w / 2), BASE - 1, C.door); put(hx + Math.floor(w / 2), BASE - 2, C.door);
+      });
+
+      // Hölderlin tower: round yellow tower with a pointed cone roof
+      const T = TOWER;
+      for (let y = T.top; y < BASE; y++) for (let x = T.x; x < T.x + T.w; x++) {
+        put(x, y, x === T.x || x >= T.x + T.w - 2 ? C.towerLo : C.tower);
+      }
+      for (let k = 0; k < 8; k++) {
+        const half = (T.w / 2 + 0.5) * (k + 1) / 8;
+        for (let x = Math.round(T.x + T.w / 2 - half); x < Math.round(T.x + T.w / 2 + half); x++) put(x, T.top - 8 + k, C.cone);
+      }
+      [[T.x + 3, T.top + 3], [T.x + 3, T.top + 8], [T.x + 5, T.top + 8]].forEach(([x, y]) => {
+        put(x, y, night ? C.lit : C.window); if (night) litMask[y * W + x] = 1;
+      });
+    }
+
+    // Luma, 9×7 plus a feet row; E marks the eyes (moved to face the walk direction)
+    const BODY = [".o.....o.", "obo...obo", "obbbbbbbo", "EYES", "obkbbbkbo", "obblllbbo", ".ooooooo."];
+    const EYES = { left: "oebbbebbo", centre: "obebbbebo", right: "obbebbbeo", shut: "obobbbobo" };
+    const FEET = ["..o...o..", ".o...o..."];
+    const ZED = ["oooo", "..o.", ".o..", "oooo"];
+    const SUN_DISC = ["..sss..", ".shhss.", "shhssss", "shsssss", "sssssss", ".sssss.", "..sss.."];
+
+    const cat = { x: 30, face: "right", target: 40, state: "walk", until: 0, step: 0 };
+    const clouds = [{ x: 18, y: 3, w: 9 }, { x: 46, y: 7, w: 7 }];
+
+    function render(t) {
+      const buf = bg.slice();
+      const set = (x, y, c) => { x = Math.round(x); y = Math.round(y); if (x >= 0 && x < W && y >= 0 && y < H) buf[y * W + x] = c; };
+      const get = (x, y) => bg[Math.min(H - 1, Math.max(0, y)) * W + Math.min(W - 1, Math.max(0, x))];
+      const sec = t / 1000;
+      const night = mode === "night";
+      const C = k => rgb(P[k]);
+
+      if (!night) {
+        const sun = C("sun"), hi = C("sunHi");
+        SUN_DISC.forEach((row, r) => [...row].forEach((ch, c) => {
+          if (ch !== ".") set(SUN.x - 3 + c, SUN.y - 3 + r, ch === "h" ? hi : sun);
+        }));
+        const long = Math.floor(sec * 1.5) % 2;
+        [[0, -1], [0, 1], [-1, 0], [1, 0]].forEach(([dx, dy]) => {
+          set(SUN.x + dx * 5, SUN.y + dy * 5, sun);
+          if (long) set(SUN.x + dx * 6, SUN.y + dy * 6, hi);
+        });
+        [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(([dx, dy]) => set(SUN.x + dx * 4, SUN.y + dy * 4, long ? hi : sun));
+        clouds.forEach(cl => {
+          const cx = ((cl.x + sec * 1.2) % (W + cl.w)) - cl.w;
+          for (let i = 0; i < cl.w; i++) {
+            const top = i > 1 && i < cl.w - 2 ? -1 : 0;
+            for (let j = top; j <= 1; j++) {
+              const x = Math.round(cx + i), y = cl.y + j;
+              if (x >= 0 && x < W && skyMask[y * W + x]) set(x, y, j === 1 ? C("cloudSh") : C("cloud"));
+            }
+          }
+        });
+      } else {
+        for (let i = 0; i < 24; i++) {
+          const x = Math.floor(hash(i, 3) * W), y = Math.floor(hash(i, 5) * 12);
+          if (skyMask[y * W + x]) set(x, y, Math.sin(sec * 2 + i * 1.3) > 0.2 ? C("star") : C("starLo"));
+        }
+        const moon = C("moon"), lo = C("moonLo");
+        for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) {
+          if (dx * dx + dy * dy > 10) continue;
+          if ((dx - 2) * (dx - 2) + (dy + 1) * (dy + 1) <= 6) continue;
+          set(SUN.x + dx, SUN.y + dy, dx > 0 || dy > 1 ? lo : moon);
+        }
+        // A few lit windows flicker off and on
+        for (let i = 0; i < W * BASE; i++) {
+          if (litMask[i] && Math.sin(sec * 0.7 + i * 2.1) > 0.97) buf[i] = C("litLo");
+        }
+      }
+
+      // River: rippling reflections of the waterfront on alternate rows
+      const water = C("water"), hiW = C("waterHi");
+      for (let y = WATER; y < BANK; y++) {
+        const d = y - WATER;
+        const src = BASE - 1 - Math.round(d * 1.6);
+        const shift = Math.round(Math.sin(sec * 1.6 + y * 0.9) * 1.2);
+        for (let x = 0; x < W; x++) {
+          if (d % 2 === 0 && src > 0) {
+            const r = get(x + shift, src);
+            set(x, y, mix(buf[y * W + x], r, night ? 0.45 : 0.38));
+          }
+          if (hash(x, y + Math.floor(sec * 3)) > 0.985) set(x, y, hiW);
+        }
+      }
+      // Moonlight glinting on the water at night
+      if (night) {
+        for (let y = WATER + 1; y < BANK; y += 2) {
+          const w = 1 + Math.round(Math.abs(Math.sin(sec * 2 + y)));
+          for (let k = -w; k <= w; k++) set(SUN.x + k + Math.round(Math.sin(sec * 1.3 + y) * 1), y, C("moonLo"));
+        }
+      }
+
+      // A punt drifting downstream with someone poling it
+      const px = ((sec * 2.2 + 30) % (W + 22)) - 16, py = 35;   // starts mid-river
+      for (let i = 0; i < 13; i++) {
+        set(px + i, py, C("hull"));
+        if (i > 0 && i < 12) set(px + i, py + 1, C("hull"));
+      }
+      set(px + 10, py - 1, C("poler")); set(px + 10, py - 2, C("poler")); set(px + 10, py - 3, C("skin"));
+      const lean = Math.round(Math.sin(sec * 1.4));
+      for (let k = 0; k < 7; k++) set(px + 12 - Math.round(k * 0.5) + (k > 3 ? lean : 0), py - 5 + k + 1, C("pole"));
+
+      // Street lamps on the promenade, glowing at night
+      LAMPS.forEach(lx => {
+        for (let y = BANK - 7; y < BANK + 2; y++) set(lx, y, C("lampPost"));
+        set(lx - 1, BANK - 8, C("lampPost")); set(lx + 1, BANK - 8, C("lampPost"));
+        set(lx, BANK - 8, night ? C("lampOn") : C("lampOff"));
+        if (night) {
+          [[-1, -7], [1, -7], [-2, -8], [2, -8], [0, -9]].forEach(([dx, dy]) => {
+            const x = lx + dx, y = BANK + dy;
+            set(x, y, mix(buf[y * W + x] || C("glow"), C("lampOn"), 0.45));
+          });
+          for (let dx = -3; dx <= 3; dx++) set(lx + dx, BANK + 2, mix(get(lx + dx, BANK + 2), C("lampOn"), 0.35 - Math.abs(dx) * 0.08));
+        }
+      });
+
+      drawCat(set, sec);
+
+      // Dithered fade at the edges so the scene dissolves into the page
+      const F = 3, data = img.data;
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        const d = Math.min(x, y, W - 1 - x, H - 1 - y);
+        const i = (y * W + x) * 4, c = buf[y * W + x];
+        data[i] = c[0]; data[i + 1] = c[1]; data[i + 2] = c[2];
+        data[i + 3] = d < F && bayer(x, y) >= (d + 0.5) / F ? 0 : 255;
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+
+    function drawCat(set, sec) {
+      const night = mode === "night";
+      const hop = !night && cat.state === "hop" ? -1 : 0;
+      const top = CAT_TOP + (night ? 1 : 0) + hop;
+      const blink = !night && (sec * 1000) % 4000 < 140;
+      const eyes = night || blink ? EYES.shut : EYES[cat.state === "walk" ? cat.face : cat.look || "centre"];
+      BODY.forEach((row, r) => {
+        const line = row === "EYES" ? eyes : row;
+        [...line].forEach((ch, c) => { if (ch !== ".") set(cat.x + c, top + r, luma[ch]); });
+      });
+      if (!night) {
+        const feet = cat.state === "walk" ? FEET[cat.step % 2] : FEET[0];
+        [...feet].forEach((ch, c) => { if (ch !== ".") set(cat.x + c, top + 7, luma.o); });
+      } else {
+        for (let k = 0; k < 2; k++) {
+          const phase = (sec / 2.4 + k / 2) % 1;
+          const zx = cat.x + 8 + Math.round(phase * 3), zy = top - 4 - Math.round(phase * 6);
+          ZED.forEach((row, r) => [...row].forEach((ch, c) => { if (ch !== ".") set(zx + c, zy + r, luma.w); }));
+        }
+      }
+    }
+
+    // Luma's day: stroll to a spot, pause and look around, sometimes hop
+    function think(now) {
+      if (mode === "night") return;
+      if (cat.state === "walk") {
+        if (cat.x === cat.target) { cat.state = "idle"; cat.until = now + 1200 + Math.random() * 2200; cat.look = "centre"; }
+        else { cat.x += cat.x < cat.target ? 1 : -1; cat.face = cat.x < cat.target ? "right" : "left"; cat.step++; }
+      } else if (cat.state === "hop") {
+        if (now > cat.until) { cat.state = "idle"; cat.until = now + 800; }
+      } else if (now > cat.until) {
+        if (Math.random() < 0.25) { cat.state = "hop"; cat.until = now + 250; }
+        else { cat.state = "walk"; cat.target = 3 + Math.floor(Math.random() * 58); }
+      } else if (Math.random() < 0.06) {
+        cat.look = ["left", "centre", "right"][Math.floor(Math.random() * 3)];
+      }
+    }
+
+    function setMode() {
+      mode = document.documentElement.getAttribute("data-theme") === "dark" ? "night" : "day";
+      P = PAL[mode];
+      lumaColors();
+      buildBackdrop();
+      cap.innerHTML = mode === "day"
+        ? 'Luma is learning how the world works. Tap the <button type="button" class="world-toggle">sun</button> to make it night.'
+        : 'Luma is asleep. Tap the <button type="button" class="world-toggle">moon</button> to wake Luma.';
+      cap.querySelector(".world-toggle").addEventListener("click", toggleTheme);
+      render(performance.now());
+    }
+
+    // Clicking the sun/moon itself also flips the theme
+    const overSun = e => {
+      const r = canvas.getBoundingClientRect();
+      const x = (e.clientX - r.left) * W / r.width, y = (e.clientY - r.top) * H / r.height;
+      return Math.abs(x - SUN.x) <= 5 && Math.abs(y - SUN.y) <= 5;
+    };
+    canvas.addEventListener("click", e => { if (overSun(e)) toggleTheme(); });
+    canvas.addEventListener("mousemove", e => { canvas.style.cursor = overSun(e) ? "pointer" : ""; });
+
+    new MutationObserver(setMode).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    setMode();
+    if (reduce) return;
+
+    // ~10 fps is plenty for pixel art; pause while off-screen or in a hidden tab
+    let visible = true, last = 0, lastThink = 0;
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(canvas);
+    (function loop(now) {
+      requestAnimationFrame(loop);
+      if (!visible || document.hidden || now - last < 100) return;
+      last = now;
+      if (now - lastThink >= 180) { think(now); lastThink = now; }
+      render(now);
+    })(0);
+  }
+
   function buildIOIWidget() {
     const host = document.getElementById("widget");
     if (!host) return;
@@ -974,22 +1337,14 @@
     requestAnimationFrame(frame);
   }
 
-  function setupThemeToggle() {
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-      const root = document.documentElement;
-      root.classList.add("theme-fade");        // page-wide crossfade
-      const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      root.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      setTimeout(() => root.classList.remove("theme-fade"), 450);
-
-      const critter = document.getElementById("critter");
-      if (critter) {                           // Luma hops at dawn and dusk
-        critter.classList.remove("hop");
-        void critter.offsetWidth;
-        critter.classList.add("hop");
-      }
-    });
+  // Flip light/dark with a page-wide crossfade; the pixel world's sun/moon calls this
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.classList.add("theme-fade");
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+    setTimeout(() => root.classList.remove("theme-fade"), 450);
   }
 
   /* External links (and the CV pdf) open in a new tab so the site stays
@@ -1006,17 +1361,72 @@
     }, true);
   }
 
+  /* publications.html: every visible paper as a compact list, grouped by year */
+  function paperYear(p) {
+    if (p.year) return p.year;
+    const m = (p.badges || []).map(b => b.label).join(" ").match(/20\d\d/);
+    return m ? Number(m[0]) : 0;
+  }
+
+  function pubNode(item) {
+    const row = el("div", "pub");
+    const paper = item.links.find(l => l.label === "Paper" || l.label === "Preprint") || item.links[0];
+    const title = el("a", "title", item.title);
+    title.href = paper.url;
+    row.appendChild(title);
+    row.appendChild(el("div", "authors", item.authors));
+    const line = el("div", "pub-line");
+    (item.badges || []).forEach(b => line.appendChild(el("span", "pill pill-" + b.tone, b.label)));
+    const links = el("span", "links");
+    item.links.forEach(l => {
+      const a = el("a", null, l.label);
+      a.href = l.url;
+      links.appendChild(a);
+    });
+    line.appendChild(links);
+    row.appendChild(line);
+    return row;
+  }
+
+  function renderPublications() {
+    const list = document.getElementById("pubs-list");
+    const scholar = SITE.links.find(l => l.label === "Scholar");
+    if (scholar) document.getElementById("scholar-link").href = scholar.url;
+    const papers = visible(PAPERS);
+    const years = [...new Set(papers.map(paperYear))].sort((a, b) => b - a);
+    years.forEach(y => {
+      list.appendChild(el("h3", "pub-year", y ? String(y) : "Other"));
+      papers.filter(p => paperYear(p) === y).forEach(p => list.appendChild(pubNode(p)));
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setupExternalLinks();
-    setupThemeToggle();
+    if (document.body.dataset.page === "publications") {
+      buildCritter();
+      renderPublications();
+      return;
+    }
     renderHeader();
     nameReveal();
     buildCritter();
     (SITE.updates === "timeline" ? setupUpdates : setupUpdatesAxis)();
-    ({ collab: buildCollabWidget, attention: buildAttentionWidget, ioi: buildIOIWidget }[SITE.widget] || buildIOIWidget)();
+    ({ world: buildWorldWidget, collab: buildCollabWidget, attention: buildAttentionWidget, ioi: buildIOIWidget }[SITE.widget] || buildWorldWidget)();
     renderBatch();          // first batch immediately, no waiting for scroll
     drainWhileNear();       // fill the initial viewport
     setupObserver();
     setupNav();
+    jumpToHash();
   });
+
+  // Arriving from publications.html (e.g. index.html#blogs): render everything
+  // above the target first, or the jump lands short as batches fill in.
+  function jumpToHash() {
+    let target = null;
+    try { target = location.hash && document.querySelector(location.hash); } catch (e) {}
+    if (!target || target.tagName !== "SECTION") return;
+    const list = target.querySelector("[data-list]");
+    if (list) drainThrough(list.id);
+    target.scrollIntoView();
+  }
 })();
