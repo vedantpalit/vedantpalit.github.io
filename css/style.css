@@ -740,6 +740,7 @@ section h2.section-head {
   margin-top: 6px;
 }
 
+/* Pixel-dashed rail, like the dithered edges of the pixel world */
 .ax-track::before {
   content: "";
   position: absolute;
@@ -747,26 +748,60 @@ section h2.section-head {
   right: 0;
   top: 14px;
   height: 2px;
-  background-color: var(--rule);
+  background-image: repeating-linear-gradient(90deg, var(--rule) 0 4px, transparent 4px 6px);
 }
 
+.ax-track.has-earlier::before {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%);
+  mask-image: linear-gradient(90deg, transparent, #000 8%);
+}
+.ax-track.has-later::before {
+  -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, #000 92%, transparent);
+}
+.ax-track.has-earlier.has-later::before {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Paging the window slides the markers in from the direction of travel */
+.ax-track.slide-back .ax-dot,
+.ax-track.slide-back .ax-tick { animation: ax-in-left 0.35s ease; }
+.ax-track.slide-fwd .ax-dot,
+.ax-track.slide-fwd .ax-tick { animation: ax-in-right 0.35s ease; }
+
+@keyframes ax-in-left  { from { opacity: 0; margin-left: -24px; } to { opacity: 1; margin-left: 0; } }
+@keyframes ax-in-right { from { opacity: 0; margin-left: 24px; }  to { opacity: 1; margin-left: 0; } }
+
+/* Each update is a tiny 8-bit glyph (page, flag, star, diamond) in its type colour */
 .ax-dot {
   position: absolute;
-  top: 14px;
+  top: 15px;
   transform: translate(-50%, -50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
   border: none;
-  padding: 0;
-  background-color: var(--dot, var(--muted));
+  padding: 2px 3px;
+  background-color: var(--bg);
+  color: var(--dot, var(--muted));
+  line-height: 0;
   cursor: pointer;
-  transition: box-shadow 0.15s ease;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
-.ax-dot:hover,
+.ax-dot svg { display: block; fill: currentColor; }
+.ax-dot .cut { fill: var(--bg); }
+
+.ax-dot:hover { opacity: 1; transform: translate(-50%, calc(-50% - 2px)); }
+
+/* The update being read bobs like an idle sprite, in two pixel steps */
 .ax-dot.active {
-  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--dot, var(--muted));
+  opacity: 1;
+  animation: ax-bob 1.1s steps(1) infinite;
+}
+
+@keyframes ax-bob {
+  0%   { transform: translate(-50%, -50%); }
+  50%  { transform: translate(-50%, calc(-50% - 2px)); }
 }
 
 .ax-tick {
@@ -841,7 +876,7 @@ section h2.section-head {
 }
 
 .ax-detail .ax-date {
-  color: var(--highlight);
+  color: var(--dot, var(--highlight));
   font-weight: 600;
   font-size: 13px;
 }
@@ -879,13 +914,17 @@ section h2.section-head {
   box-shadow: 0 0 0 3px var(--bg);
 }
 
-.t-paper    { --dot: #b42318; }
-.t-position { --dot: #475467; }
-.t-award    { --dot: #dc8a0e; }
+/* Update types: papers in the link teal, positions in ink slate,
+   awards in the red detail colour, milestones in grey */
+.t-paper     { --dot: #0f6e6e; }
+.t-position  { --dot: #475467; }
+.t-award     { --dot: #c8372d; }
+.t-milestone { --dot: #98a2b3; }
 
-:root[data-theme="dark"] .t-paper    { --dot: #f07c6f; }
-:root[data-theme="dark"] .t-position { --dot: #90a2b5; }
-:root[data-theme="dark"] .t-award    { --dot: #f0b866; }
+:root[data-theme="dark"] .t-paper     { --dot: #5fc2b8; }
+:root[data-theme="dark"] .t-position  { --dot: #90a2b5; }
+:root[data-theme="dark"] .t-award     { --dot: #f07c6f; }
+:root[data-theme="dark"] .t-milestone { --dot: #6b7480; }
 
 .tl-item .date {
   flex-shrink: 0;
@@ -1318,6 +1357,6 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { transition: none; transform: none; }
-  #critter svg, .cr-eyes-open, .cr-z { animation: none; }
+  #critter svg, .cr-eyes-open, .cr-z, .ax-dot.active { animation: none; }
   .nav-ink { transition: opacity 0.2s ease; }
 }

@@ -621,34 +621,38 @@
 
   /* Horizontal axis: dots placed by real date, year ticks, and a fixed
      detail line that fills on hover/tap. Height stays constant forever. */
+  /* 8-bit markers for the updates axis, drawn like the pixel world:
+     x = the type colour, l = a cut-out in the page background */
+  const GLYPHS = {
+    paper:     ["xxxx..", "xxxxx.", "xxxxxx", "xllllx", "xxxxxx", "xllllx", "xxxxxx"],
+    position:  ["xxxxx.", "xxxxxx", "xxxxx.", "x.....", "x.....", "x.....", "xx...."],
+    award:     ["...x...", "...x...", "xxxxxxx", ".xxxxx.", "..xxx..", ".xx.xx.", "xx...xx"],
+    milestone: ["..x..", ".xxx.", "xxxxx", ".xxx.", "..x.."]
+  };
+  function pixelGlyph(type) {
+    const rows = GLYPHS[type] || GLYPHS.milestone;
+    let rects = "";
+    rows.forEach((row, y) => [...row].forEach((ch, x) => {
+      if (ch !== ".") rects += '<rect x="' + x + '" y="' + y + '" width="1" height="1"' + (ch === "l" ? ' class="cut"' : "") + "/>";
+    }));
+    return '<svg viewBox="0 0 ' + rows[0].length + " " + rows.length + '" width="' + rows[0].length * 2 +
+      '" height="' + rows.length * 2 + '" shape-rendering="crispEdges" aria-hidden="true">' + rects + "</svg>";
+  }
+
   function setupUpdatesAxis() {
-    const RECENT_COUNT = 8;   // older updates slide out of the axis entirely
+    const WINDOW = 8;   // updates on the axis at once; stepping past either end slides the window
     const list = document.getElementById("updates-list");
     list.classList.remove("timeline");
     const MONTHS = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, June: 5,
                      Jul: 6, July: 6, Aug: 7, Sep: 8, Sept: 8, Oct: 9, Nov: 10, Dec: 11 };
-    // UPDATES is newest-first, so slicing the front keeps the recent window
-    const items = visible(UPDATES).slice(0, RECENT_COUNT).map(u => {
+    // UPDATES is newest-first; the axis works oldest → newest
+    const all = visible(UPDATES).map(u => {
       const m = u.date.match(/^(\w+)\s+'(\d\d)/);
       return { u, t: new Date(2000 + Number(m[2]), MONTHS[m[1]] || 0, 1).getTime() };
-    });
-    const tMin = Math.min(...items.map(i => i.t));
-    const tMax = Math.max(...items.map(i => i.t));
-    const toX = t => 3 + 94 * (t - tMin) / (tMax - tMin);
-    items.forEach(i => { i.x = toX(i.t); });
-
-    // Nudge near-coincident dots apart so every one stays hoverable
-    const GAP = 2.4;
-    const sorted = [...items].sort((a, b) => a.x - b.x);
-    for (let i = 1; i < sorted.length; i++) {
-      if (sorted[i].x < sorted[i - 1].x + GAP) sorted[i].x = sorted[i - 1].x + GAP;
-    }
-    for (let i = sorted.length - 1; i >= 0; i--) {
-      if (sorted[i].x > 97) sorted[i].x = 97;
-      if (i < sorted.length - 1 && sorted[i].x > sorted[i + 1].x - GAP) {
-        sorted[i].x = sorted[i + 1].x - GAP;
-      }
-    }
+    }).reverse();
+    const n = all.length;
+    let lo = Math.max(0, n - WINDOW);   // window shows all[lo .. lo + WINDOW - 1]
+    let current = n - 1;
 
     const track = el("div", "ax-track");
     const detail = el("div", "ax-detail");
@@ -656,28 +660,71 @@
     const next = el("button", "ax-arrow", "›");
     prev.setAttribute("aria-label", "earlier update");
     next.setAttribute("aria-label", "later update");
-    let current = 0;
 
-    for (let y = new Date(tMin).getFullYear(); y <= new Date(tMax).getFullYear(); y++) {
-      const t = new Date(y, 0, 1).getTime();
-      if (t < tMin || t > tMax) continue;
-      const tick = el("span", "ax-tick", "’" + String(y).slice(-2));
-      tick.style.left = toX(t) + "%";
-      track.appendChild(tick);
+    function layout(dir) {
+      track.innerHTML = "";
+      all.forEach(i => { i.el = null; });
+      const items = all.slice(lo, lo + WINDOW);
+      const tMin = items[0].t, tMax = items[items.length - 1].t;
+      const toX = t => 3 + 94 * (t - tMin) / Math.max(tMax - tMin, 1);
+      items.forEach(i => { i.x = toX(i.t); });
+
+      // Nudge near-coincident markers apart so every one stays hoverable
+      const GAP = 3.4;
+      for (let i = 1; i < items.length; i++) {
+        if (items[i].x < items[i - 1].x + GAP) items[i].x = items[i - 1].x + GAP;
+      }
+      for (let i = items.length - 1; i >= 0; i--) {
+        if (items[i].x > 97) items[i].x = 97;
+        if (i < items.length - 1 && items[i].x > items[i + 1].x - GAP) items[i].x = items[i + 1].x - GAP;
+      }
+
+      for (let y = new Date(tMin).getFullYear(); y <= new Date(tMax).getFullYear(); y++) {
+        const t = new Date(y, 0, 1).getTime();
+        if (t < tMin || t > tMax) continue;
+        const tick = el("span", "ax-tick", "’" + String(y).slice(-2));
+        tick.style.left = toX(t) + "%";
+        track.appendChild(tick);
+      }
+
+      items.forEach(i => {
+        const k = all.indexOf(i);
+        const dot = el("button", "ax-dot t-" + (i.u.type || "milestone"), pixelGlyph(i.u.type));
+        dot.style.left = i.x + "%";
+        dot.setAttribute("aria-label", i.u.date);
+        dot.addEventListener("mouseenter", () => select(k));
+        dot.addEventListener("click", () => select(k));
+        i.el = dot;
+        track.appendChild(dot);
+      });
+
+      // Faded rail ends hint that more updates lie beyond the window
+      track.classList.toggle("has-earlier", lo > 0);
+      track.classList.toggle("has-later", lo + WINDOW < n);
+      if (dir) {
+        track.classList.remove("slide-back", "slide-fwd");
+        void track.offsetWidth;
+        track.classList.add(dir < 0 ? "slide-back" : "slide-fwd");
+        setTimeout(() => track.classList.remove("slide-back", "slide-fwd"), 400);   // let the active bob resume
+      }
     }
 
-    function select(i) {
-      current = sorted.indexOf(i);
-      items.forEach(j => j.el.classList.toggle("active", j === i));
+    function select(k) {
+      // Stepping past the window pages it: back puts k at the right edge, forward at the left
+      if (k < lo) { lo = Math.max(0, k - WINDOW + 1); layout(-1); }
+      else if (k >= lo + WINDOW) { lo = Math.min(k, n - WINDOW); layout(1); }
+      current = k;
+      all.forEach(j => { if (j.el) j.el.classList.toggle("active", j === all[k]); });
+      const u = all[k].u;
       detail.classList.remove("swap");
       void detail.offsetWidth;                 // restart the crossfade
-      detail.innerHTML = '<span class="ax-date">' + i.u.date + "</span> — " + i.u.text;
+      detail.innerHTML = '<span class="ax-date t-' + (u.type || "milestone") + '">' + u.date + "</span> — " + u.text;
       detail.classList.add("swap");
-      prev.disabled = current === 0;
-      next.disabled = current === sorted.length - 1;
+      prev.disabled = k === 0;
+      next.disabled = k === n - 1;
     }
 
-    const step = d => { if (sorted[current + d]) select(sorted[current + d]); };
+    const step = d => { if (all[current + d]) select(current + d); };
     prev.addEventListener("click", () => step(-1));
     next.addEventListener("click", () => step(1));
     document.addEventListener("keydown", e => {
@@ -686,16 +733,7 @@
       else if (e.key === "ArrowRight") step(1);
     });
 
-    items.forEach(i => {
-      const dot = el("button", "ax-dot t-" + (i.u.type || "milestone"));
-      dot.style.left = i.x + "%";
-      dot.setAttribute("aria-label", i.u.date);
-      dot.addEventListener("mouseenter", () => select(i));
-      dot.addEventListener("click", () => select(i));
-      i.el = dot;
-      track.appendChild(dot);
-    });
-
+    layout(0);
     list.appendChild(track);
     const row = el("div", "ax-detail-row");
     row.appendChild(detail);
@@ -704,7 +742,7 @@
     nav.appendChild(next);
     row.appendChild(nav);
     list.appendChild(row);
-    select(items[0]);
+    select(current);
   }
 
   /* Path patching on the IOI circuit (Wang et al. 2022). Click a head to
