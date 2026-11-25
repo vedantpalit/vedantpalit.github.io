@@ -10,7 +10,11 @@
 <meta property="og:title" content="Reading the Loop: Do looped transformers think in words internally?">
 <meta property="og:description" content="A Jacobian-lens study of Inkling 2 Mini, a looped transformer: the loop verbalizes reasoning steps the model never writes, passes them between passes in a gated message, and keeps steps that a shorter chain of thought skips.">
 <meta property="og:url" content="https://vedantpalit.github.io/blogs/reading-the-loop.html">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://vedantpalit.github.io/images/reading-the-loop-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://vedantpalit.github.io/images/reading-the-loop-card.png">
 <meta name="twitter:title" content="Reading the Loop: Do looped transformers think in words internally?">
 <meta name="twitter:description" content="A Jacobian-lens study of Inkling 2 Mini, a looped transformer: the loop verbalizes reasoning steps the model never writes, passes them between passes in a gated message, and keeps steps that a shorter chain of thought skips.">
 <link rel="icon" href="../images/favicon.ico" sizes="48x48">
@@ -481,6 +485,12 @@ details.aside table.mini { margin: 12px 0 4px; }
 .citebox-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--rule-2); font-size: 13px; font-weight: 600; color: var(--strong); }
 .citebox pre { margin: 0; padding: 12px 14px; font: 12.5px/1.55 var(--mono); color: var(--text); overflow-x: auto; white-space: pre; }
 .d-byline a.gh-link { display: inline-flex; align-items: center; gap: 6px; color: var(--strong); text-decoration: none; font-size: 14px; } .d-byline a.gh-link:hover { color: var(--accent); } .gh-icon { flex: none; }
+.steer-ex { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.steer-ex-k { font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.steer-ex svg { width: 100%; max-width: 250px; height: auto; display: block; }
+.steer-ex .sv { font: 600 11.5px var(--sans); fill: var(--muted); }
+.steer-ex .sw { font: 600 12.5px var(--sans); fill: var(--strong); }
+.steer-ex .sa { font: 600 15px var(--sans); fill: var(--faint); }
 
 </style>
 <a class="site-home" href="../index.html#blogs">&larr; Vedant Palit</a>
@@ -688,7 +698,16 @@ details.aside table.mini { margin: 12px 0 4px; }
 <figure class="wide">
   <div class="two">
     <div class="panel chart" id="c-steer-when"><h4>When we steer: answer follows</h4><div class="legend"></div><div class="plot"></div></div>
-    <div class="panel chart" id="c-steer-how"><h4>What we steer along, on pass 3</h4><div class="legend"></div><div class="plot"></div></div>
+    <div class="panel chart" id="c-steer-how"><h4>What we steer along, on pass 3</h4><div class="legend"></div><div class="plot"></div><div class="steer-ex">
+      <div class="steer-ex-k">For example</div>
+      <svg viewBox="0 0 230 74" aria-hidden="true">
+        <text x="0" y="15" class="sv">Shakespeare &rarr; capital</text>
+        <rect x="0" y="24" width="70" height="26" rx="13" fill="var(--bg-soft)" stroke="var(--rule-2)"/><text x="35" y="41" text-anchor="middle" class="sw" style="text-decoration:line-through;fill:var(--muted)">London</text>
+        <text x="96" y="34" text-anchor="middle" class="sv" style="font-size:10.5px;fill:var(--red)">+ Austria</text><text x="96" y="47" text-anchor="middle" class="sa">&rarr;</text>
+        <rect x="122" y="22" width="74" height="30" rx="15" fill="var(--teal)"/><text x="159" y="42" text-anchor="middle" class="sw" style="fill:var(--bg);font-weight:700">Vienna</text>
+        <text x="0" y="68" class="sv" style="font-size:10.5px">pushed into pass 3 along the lens direction</text>
+      </svg>
+    </div></div>
   </div>
   <figcaption><b>Steering works inside the loop, best on the third pass and along the lens's direction.</b> How often the answer switches to the other country's answer. Left: steering along the lens's direction, by the pass we steer. Right: steering on the third pass, by the direction we steer along; random is a push of the same size in a random direction.</figcaption>
 </figure>
@@ -1099,7 +1118,7 @@ lineChart(document.getElementById("c-jgeo"), { cats: ["6", "7", "8", "9", "10", 
            { name: "pass 1 vs pass 3", color: "c1", values: [0.17, 0.18, 0.17, 0.16, 0.15, 0.11, 0.20, 0.15, 0.15, 0.14, 0.11, 0.10] }] });
 gbars(document.getElementById("c-steer-when"), { cats: ["Pass 1", "Pass 2", "Pass 3", "After the loop"], max: 60, h: 250,
   groups: [{ name: "lens direction", color: "c1", values: [0, 21, 50, 0] }] });
-hbars(document.getElementById("c-steer-how"), { max: 60, labelW: 150, bh: 26, rowGap: 34, rows: [{ label: "Lens direction" }, { label: "Plain word direction" }, { label: "Real state difference" }, { label: "Random push" }],
+hbars(document.getElementById("c-steer-how"), { max: 60, labelW: 150, rows: [{ label: "Lens direction" }, { label: "Plain word direction" }, { label: "Real state difference" }, { label: "Random push" }],
   series: [{ name: "answer follows", color: "c1", values: [50, 29, 27, 4] }] });
 const LAPS = ["1", "2", "3", "4", "5", "6", "7", "8"], lapHead = i => `${i + 1} pass${i ? "s" : ""}`;
 lineChart(document.getElementById("c-sweep-gpqa"), { cats: LAPS, yMax: 50, yTicks: [0, 25, 50], h: 260, xTitle: "passes", band: [0, 4, "varloop trained here"], ref: [25, "chance"], tipHead: lapHead,
