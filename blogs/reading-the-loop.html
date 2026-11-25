@@ -931,21 +931,21 @@ function gbars(box, { cats, groups, max = 100, fmt = v => v + "%", h = 260 }) {
 }
 
 /* grouped horizontal bars: rows {label, sub}; series {name, color, values, texts?} */
-function hbars(box, { rows, series, max = 100, fmt = v => v + "%", labelW = 150, rowGap = 14, legend = true }) {
+function hbars(box, { rows, series, max = 100, fmt = v => v + "%", labelW = 150, rowGap = 14, legend = true, bh = 16 }) {
   if (legend && series.length > 1) legendFor(box, series, true); else box._off = box._off || new Set();
   mount(box, (plot, W) => {
     const vis = series.filter(s => !box._off.has(s.name));
-    const bh = 16, rh = vis.length * (bh + 4) + rowGap, H = rows.length * rh + 22, iw = W - labelW - 70;
+    const rh = vis.length * (bh + 4) + rowGap, H = rows.length * rh + 22, iw = W - labelW - 70;
     const svg = el("svg", { width: W, height: H, role: "img" }, plot);
     [0, max / 2, max].forEach(v => { const x = labelW + v / max * iw; el("line", { x1: x, x2: x, y1: 0, y2: H - 20, class: v ? "grid" : "axis0" }, svg); el("text", { x, y: H - 4, "text-anchor": "middle", class: "tick" }, svg).textContent = fmt(v); });
     rows.forEach((r, i) => {
       const y0 = i * rh + 4;
-      el("text", { x: 0, y: y0 + 12, class: "xl", style: "fill:var(--strong);font-weight:600" }, svg).textContent = r.label;
+      el("text", { x: 0, y: y0 + bh / 2 + 4, class: "xl", style: "fill:var(--strong);font-weight:600" }, svg).textContent = r.label;
       if (r.sub) el("text", { x: 0, y: y0 + 28, class: "tick" }, svg).textContent = r.sub;
       vis.forEach((s, k) => {
         const v = s.values[i], w = Math.max(2, v / max * iw), y = y0 + k * (bh + 4);
         const b = el("rect", { x: labelW, y, width: w, height: bh, rx: 3, fill: cv(r.color || s.color), class: "s", "data-n": s.name }, svg);
-        el("text", { x: labelW + w + 6, y: y + 12, class: "vl" }, svg).textContent = s.texts ? s.texts[i] : fmt(v);
+        el("text", { x: labelW + w + 6, y: y + bh / 2 + 4, class: "vl" }, svg).textContent = s.texts ? s.texts[i] : fmt(v);
         b.addEventListener("pointermove", () => { const pr = plot.getBoundingClientRect(), br = box.getBoundingClientRect(); showTip(box, labelW + w + (pr.left - br.left), y + 8 + (pr.top - br.top), `<div class="h">${esc(r.label)}</div>` + rowHTML(box, s.color, s.name, fmt(v))); });
         b.addEventListener("pointerleave", () => hideTip(box));
       });
@@ -1099,7 +1099,7 @@ lineChart(document.getElementById("c-jgeo"), { cats: ["6", "7", "8", "9", "10", 
            { name: "pass 1 vs pass 3", color: "c1", values: [0.17, 0.18, 0.17, 0.16, 0.15, 0.11, 0.20, 0.15, 0.15, 0.14, 0.11, 0.10] }] });
 gbars(document.getElementById("c-steer-when"), { cats: ["Pass 1", "Pass 2", "Pass 3", "After the loop"], max: 60, h: 250,
   groups: [{ name: "lens direction", color: "c1", values: [0, 21, 50, 0] }] });
-hbars(document.getElementById("c-steer-how"), { max: 60, labelW: 150, rows: [{ label: "Lens direction" }, { label: "Plain word direction" }, { label: "Real state difference" }, { label: "Random push" }],
+hbars(document.getElementById("c-steer-how"), { max: 60, labelW: 150, bh: 26, rowGap: 34, rows: [{ label: "Lens direction" }, { label: "Plain word direction" }, { label: "Real state difference" }, { label: "Random push" }],
   series: [{ name: "answer follows", color: "c1", values: [50, 29, 27, 4] }] });
 const LAPS = ["1", "2", "3", "4", "5", "6", "7", "8"], lapHead = i => `${i + 1} pass${i ? "s" : ""}`;
 lineChart(document.getElementById("c-sweep-gpqa"), { cats: LAPS, yMax: 50, yTicks: [0, 25, 50], h: 260, xTitle: "passes", band: [0, 4, "varloop trained here"], ref: [25, "chance"], tipHead: lapHead,
