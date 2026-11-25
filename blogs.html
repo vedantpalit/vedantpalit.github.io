@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Blogs · Vedant Palit</title>
+    <meta name="author" content="Vedant Palit">
+    <meta name="description" content="Blog posts by Vedant Palit.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.ico" sizes="48x48">
+    <link rel="icon" href="images/favicon.png" type="image/png" sizes="192x192">
+    <script>
+      /* Set theme before first paint to avoid a flash of the wrong mode */
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      })();
+    </script>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+
+  <body data-page="blogs">
+    <nav>
+      <div class="container">
+        <a href="index.html#updates">Updates</a>
+        <a href="index.html#research">Research</a>
+        <a href="index.html#blogs">Blogs</a>
+        <a href="index.html#service">Service</a>
+      </div>
+    </nav>
+
+    <main class="container pubs-page">
+      <section id="blogs-page">
+        <h2>Blogs</h2>
+        <div id="blogs-all"></div>
+      </section>
+    </main>
+
+    <footer class="container">
+      Vedant Palit
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

@@ -3,7 +3,9 @@
    Set hidden: true on any entry to keep it in the file but off the page.
    Papers: selected: true also shows the paper on the homepage; every
    visible paper is listed on publications.html, grouped by year (taken
-   from the venue label, or from year: for papers without one). */
+   from the venue label, or from year: for papers without one).
+   Blogs: selected: true also shows the post on the homepage; every
+   visible post is listed on blogs.html. */
 
 const SITE = {
   name: "Vedant Palit",
@@ -39,7 +41,7 @@ const SITE = {
     },
     { label: "CV", url: "images/Vedant_Palit_C_V_web.pdf" },
     { label: "Scholar", url: "https://scholar.google.com/citations?hl=en&user=aUL2jngAAAAJ" },
-    { label: "Blog", url: "https://medium.com/@vedantpalit10" },
+    { label: "Blog", url: "blogs.html" },
     { label: "GitHub", url: "https://github.com/vedantpalit" }
   ]
 };
@@ -246,16 +248,25 @@ const SERVICE = [
 /* One pill card per post; blurb is the post's actual opening lines. */
 const BLOGS = [
   {
+    source: "Research",
+    title: "Reading the Loop: Do looped transformers think in words internally?",
+    blurb: "A looped transformer works out reasoning steps in words inside its loop, without writing them down. We read every pass of Inkling 2 Mini with a Jacobian lens…",
+    url: "blogs/reading-the-loop.html",
+    selected: true
+  },
+  {
     source: "Medium",
     title: "Pruning and Merging of Tokens for Efficient VL Models",
     blurb: "Often in tasks related to computer vision and NLP, computationally expensive and memory-intensive processing becomes a hindrance towards faster model inferencing…",
-    url: "https://medium.com/@vedantpalit10/pruning-and-merging-of-tokens-for-efficient-vl-models-a-review-5fa833a0c7e6"
+    url: "https://medium.com/@vedantpalit10/pruning-and-merging-of-tokens-for-efficient-vl-models-a-review-5fa833a0c7e6",
+    selected: true
   },
   {
     source: "Medium",
     title: "I-JEPA: Self-Supervised Image-Based Learning",
     blurb: "This article is aimed at discussing the methodology and contributions of a CVPR’23 paper I read very recently and found really interesting.",
-    url: "https://medium.com/@vedantpalit10/i-jepa-an-improved-approach-towards-self-supervised-image-based-learning-f622a5793980"
+    url: "https://medium.com/@vedantpalit10/i-jepa-an-improved-approach-towards-self-supervised-image-based-learning-f622a5793980",
+    selected: true
   },
   {
     source: "WordPress",

@@ -184,8 +184,8 @@
   const queue = [];
   visible(PAPERS).filter(p => p.selected).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
   visible(PROJECTS).forEach(p => queue.push({ target: "projects-list", node: () => projectNode(p) }));
+  visible(BLOGS).filter(b => b.selected).forEach(b => queue.push({ target: "blogs-list", node: () => blogNode(b) }));
   visible(SERVICE).forEach(s => queue.push({ target: "service-list", node: () => serviceNode(s) }));
-  visible(BLOGS).forEach(b => queue.push({ target: "blogs-list", node: () => blogNode(b) }));
 
   function renderBatch() {
     const batch = queue.splice(0, BATCH_SIZE);
@@ -233,7 +233,7 @@
   // since anchors below the fold may not be populated yet.
   function setupNav() {
     // Position-based scroll spy with a sliding ink bar. A bottom clamp
-    // guarantees the last section (Blogs) activates at page end, even
+    // guarantees the last section (Service) activates at page end, even
     // though the final sections are shorter than a viewport.
     const links = [...document.querySelectorAll("nav a[href^='#']")];
     const sections = links.map(a => document.querySelector(a.getAttribute("href")));
@@ -1438,8 +1438,19 @@
     });
   }
 
+  /* blogs.html: every visible blog post as a card */
+  function renderBlogs() {
+    const list = document.getElementById("blogs-all");
+    visible(BLOGS).forEach(b => list.appendChild(blogNode(b)));
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setupExternalLinks();
+    if (document.body.dataset.page === "blogs") {
+      buildCritter();
+      renderBlogs();
+      return;
+    }
     if (document.body.dataset.page === "publications") {
       buildCritter();
       renderPublications();
