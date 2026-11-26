@@ -1388,3 +1388,8 @@ footer {
 .blog-img-dark { display: none; }
 :root[data-theme="dark"] .blog-img-light { display: none; }
 :root[data-theme="dark"] .blog-img-dark { display: block; }
+
+/* Paper figures: imageDark versions swap in with the dark theme */
+.entry .thumb img.img-dark { display: none; }
+:root[data-theme="dark"] .entry .thumb img.img-light { display: none; }
+:root[data-theme="dark"] .entry .thumb img.img-dark { display: block; }

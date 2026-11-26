@@ -103,7 +103,8 @@
     close.setAttribute("aria-label", "Close");
     close.addEventListener("click", () => lightbox.close());
     const img = el("img");
-    img.src = item.image;
+    const dark = document.documentElement.getAttribute("data-theme") === "dark";
+    img.src = (dark && item.imageDark) || item.image;
     img.alt = item.title;
     lightbox.append(close, img, el("div", "lightbox-caption", item.title));
     lightbox.showModal();
@@ -115,11 +116,15 @@
       const thumb = el("button", "thumb");
       thumb.type = "button";
       thumb.setAttribute("aria-label", "Enlarge figure: " + item.title);
-      const img = el("img");
-      img.src = item.image;
-      img.alt = "";
-      img.loading = "lazy";
-      thumb.appendChild(img);
+      // with imageDark, light and dark figures swap with the site's theme (see css)
+      [[item.image, item.imageDark ? "img-light" : null], [item.imageDark, "img-dark"]].forEach(([src, cls]) => {
+        if (!src) return;
+        const img = el("img", cls);
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        thumb.appendChild(img);
+      });
       thumb.addEventListener("click", () => openLightbox(item));
       row.appendChild(thumb);
     }

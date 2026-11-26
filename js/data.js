@@ -1,7 +1,8 @@
 /* All site content lives here. To add an entry, append an object to the
    relevant array — the page renders everything in js/main.js.
    Set hidden: true on any entry to keep it in the file but off the page.
-   Papers: selected: true also shows the paper on the homepage; every
+   Papers: imageDark: (optional) is shown instead of image: in dark mode.
+   selected: true also shows the paper on the homepage; every
    visible paper is listed on publications.html, grouped by year (taken
    from the venue label, or from year: for papers without one).
    Blogs: keep the newest post first. Posts hosted on this site (relative
@@ -75,6 +76,7 @@ const PAPERS = [
     title: "When Forgetting is not Catastrophic: On the Mechanics of Spurious Forgetting",
     year: 2026,
     image: "images/fig1_x.png",
+    imageDark: "images/fig1_x-dark.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Nicolas Zucchet, Zhijing Jin, Bernhard Schölkopf",
     links: [
       { label: "Repo", url: "https://github.com/vedantpalit/spurious-forgetting-mechanics" },
@@ -85,6 +87,7 @@ const PAPERS = [
     selected: true,
     title: "How Do Linear Probes Emerge? A Circuit-Tracing Framework with Concept-Targeted Attribution",
     image: "images/anchor.png",
+    imageDark: "images/anchor-dark.png",
     authors: "<strong>Vedant Palit</strong>, Florent Draye, Terry Jingchen Zhang, Bernhard Schölkopf, Zhijing Jin",
     badges: [{ label: "EMNLP 2026", tone: "acl" }],
     links: [
@@ -96,6 +99,7 @@ const PAPERS = [
     selected: true,
     title: "Simulating Eutopia: Revisiting Long-term Fairness with Outcomes, Performativity, and Dynamics",
     image: "images/eutopia.png",
+    imageDark: "images/eutopia-dark.png",
     authors: "<strong>Vedant Palit</strong>, Udvas Das, Brahim Driss, Debabrota Basu",
     badges: [
       { label: "EWAF 2026 · Spotlight", tone: "ewaf" },
@@ -109,6 +113,7 @@ const PAPERS = [
   {
     title: "CLT-Forge: A Scalable Library for Cross-Layer Transcoders and Attribution Graphs",
     image: "images/clt-forge.png",
+    imageDark: "images/clt-forge-dark.png",
     authors: "Florent Draye, <strong>Vedant Palit</strong>, Abir Harrasse, Tung-Yu Wu, Jiarui Liu, Punya Syon Pandey, Roderick Wu, Chih-Hao Hsu, Terry Jingchen Zhang, Zhijing Jin, Bernhard Schölkopf",
     badges: [{ label: "EMNLP Demo Track 2026", tone: "acl" }],
     links: [
@@ -119,6 +124,7 @@ const PAPERS = [
   {
     title: "Forgotten Polygons: Multimodal Large Language Models are Shape-Blind",
     image: "images/shapeblind.png",
+    imageDark: "images/shapeblind-dark.png",
     authors: "William Rudman*, Michal Golovanesky*, Amir Bar, <strong>Vedant Palit</strong>, Yann LeCun, Carsten Eickhoff, Ritambhara Singh",
     badges: [{ label: "ACL Findings 2025", tone: "acl" }],
     links: [
@@ -139,6 +145,7 @@ const PAPERS = [
   {
     title: "WellDunn: On the Robustness and Explainability of Language Models and Large Language Models in Identifying Wellness Dimensions",
     image: "images/welldunn.png",
+    imageDark: "images/welldunn-dark.png",
     authors: "Ali Mohammadi, Edward Raff, Jinendra Malekar, <strong>Vedant Palit</strong>, Francis Ferraro, Manas Gaur",
     badges: [{ label: "EMNLP 2024 · BlackBox NLP Workshop", tone: "acl" }],
     links: [
@@ -150,6 +157,7 @@ const PAPERS = [
     selected: true,
     title: "Towards Vision-Language Mechanistic Interpretability: A Causal Tracing Tool for BLIP",
     image: "images/mechinterpvl.png",
+    imageDark: "images/mechinterpvl-dark.png",
     authors: "<strong>Vedant Palit*</strong>, Rohan Pandey*, Aryaman Arora, Paul Pu Liang",
     badges: [{ label: "ICCV 2023 · CLVL Workshop", tone: "cvf" }],
     links: [
@@ -160,6 +168,7 @@ const PAPERS = [
   {
     title: "Knowledge Graph Guided Semantic Evaluation of Language Models For User Trust",
     image: "images/kgeval.png",
+    imageDark: "images/kgeval-dark.png",
     authors: "Kaushik Roy, Tarun Garg, <strong>Vedant Palit</strong>, Yuxin Zi, Vignesh Narayanan, Amit Sheth",
     badges: [{ label: "IEEE CAI 2023", tone: "ieee" }],
     links: [
@@ -170,6 +179,7 @@ const PAPERS = [
   {
     title: "Exploring The Potential of Large Language Models for Assisting with Mental Health Diagnostic Assessments",
     image: "images/kaushik_paper.png",
+    imageDark: "images/kaushik_paper-dark.png",
     authors: "Kaushik Roy, Harshul Surana, Darssan Eswaramoorthi, Yuxin Zi, <strong>Vedant Palit</strong>, Ritvik Garimella, Amit Sheth",
     badges: [{ label: "ACM Trans. on Computing for Healthcare 2025", tone: "acm" }],
     links: [
@@ -181,6 +191,7 @@ const PAPERS = [
     hidden: true,
     title: "Adaptive Federated Learning Defences via Trust-Aware Deep Q-Networks",
     image: "images/adaptive_fl.png",
+    imageDark: "images/adaptive_fl-dark.png",
     authors: "<strong>Vedant Palit</strong>",
     badges: [{ label: "Under Review", tone: "review" }],
     links: [
