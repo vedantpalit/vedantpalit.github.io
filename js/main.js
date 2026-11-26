@@ -165,16 +165,40 @@
     return row;
   }
 
-  /* Blog pills: one full-width card per post with its opening lines */
+  /* Blog posts written for this site get full cards (with an image if given);
+     posts on other platforms are listed compactly under "Older posts" on blogs.html */
+  const isExternal = b => /^https?:\/\//.test(b.url);
+
   function blogNode(b) {
-    const card = el("a", "blog-card");
+    const card = el("a", "blog-card" + (b.image ? " has-img" : ""));
     card.href = b.url;
+    if (b.image) {
+      // with imageDark, the two images swap with the site's light/dark theme (see css)
+      [[b.image, b.imageDark ? "blog-img blog-img-light" : "blog-img"], [b.imageDark, "blog-img blog-img-dark"]].forEach(([src, cls]) => {
+        if (!src) return;
+        const img = el("img", cls);
+        img.src = src;
+        img.alt = "";
+        img.loading = "lazy";
+        card.appendChild(img);
+      });
+    }
+    const text = el("span", "blog-text");
     const head = el("span", "blog-head");
-    head.appendChild(el("span", "blog-src", b.source));
+    head.appendChild(el("span", "blog-src", b.date || b.source));
     head.appendChild(el("span", "blog-title", b.title));
-    card.appendChild(head);
-    if (b.blurb) card.appendChild(el("span", "blog-blurb", b.blurb));
+    text.appendChild(head);
+    if (b.blurb) text.appendChild(el("span", "blog-blurb", b.blurb));
+    card.appendChild(text);
     return card;
+  }
+
+  function olderNode(b) {
+    const row = el("a", "blog-older-row");
+    row.href = b.url;
+    row.appendChild(el("span", "blog-older-src", b.source));
+    row.appendChild(el("span", "blog-older-title", b.title));
+    return row;
   }
 
   const visible = arr => arr.filter(x => !x.hidden);
@@ -184,7 +208,7 @@
   const queue = [];
   visible(PAPERS).filter(p => p.selected).forEach(p => queue.push({ target: "papers-list", node: () => entryNode(p) }));
   visible(PROJECTS).forEach(p => queue.push({ target: "projects-list", node: () => projectNode(p) }));
-  visible(BLOGS).filter(b => b.selected).forEach(b => queue.push({ target: "blogs-list", node: () => blogNode(b) }));
+  visible(BLOGS).filter(b => !isExternal(b)).forEach(b => queue.push({ target: "blogs-list", node: () => blogNode(b) }));
   visible(SERVICE).forEach(s => queue.push({ target: "service-list", node: () => serviceNode(s) }));
 
   function renderBatch() {
@@ -1441,7 +1465,15 @@
   /* blogs.html: every visible blog post as a card */
   function renderBlogs() {
     const list = document.getElementById("blogs-all");
-    visible(BLOGS).forEach(b => list.appendChild(blogNode(b)));
+    visible(BLOGS).filter(b => !isExternal(b)).forEach(b => list.appendChild(blogNode(b)));
+    const older = visible(BLOGS).filter(isExternal);
+    if (!older.length) return;
+    const box = el("details", "blog-older");
+    box.appendChild(el("summary", null, "Older posts <span class=\"blog-older-n\">" + older.length + "</span>"));
+    const rows = el("div", "blog-older-list");
+    older.forEach(b => rows.appendChild(olderNode(b)));
+    box.appendChild(rows);
+    list.after(box);
   }
 
   document.addEventListener("DOMContentLoaded", () => {

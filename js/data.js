@@ -4,8 +4,10 @@
    Papers: selected: true also shows the paper on the homepage; every
    visible paper is listed on publications.html, grouped by year (taken
    from the venue label, or from year: for papers without one).
-   Blogs: selected: true also shows the post on the homepage; every
-   visible post is listed on blogs.html. */
+   Blogs: keep the newest post first. Posts hosted on this site (relative
+   url) get full cards, with image: (and imageDark: for dark mode) and date: if given, on the homepage and
+   blogs.html; posts on other platforms (http url) are listed under
+   "Older posts" on blogs.html only. */
 
 const SITE = {
   name: "Vedant Palit",
@@ -252,7 +254,9 @@ const BLOGS = [
     title: "Reading the Loop: Do looped transformers think in words internally?",
     blurb: "A looped transformer works out reasoning steps in words inside its loop, without writing them down. We read every pass of Inkling 2 Mini with a Jacobian lens…",
     url: "blogs/reading-the-loop.html",
-    selected: true
+    date: "Nov 2026",
+    image: "images/reading-the-loop-card.png",
+    imageDark: "images/reading-the-loop-card-dark.png"
   },
   {
     source: "Medium",

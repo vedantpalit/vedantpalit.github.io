@@ -1360,3 +1360,31 @@ footer {
   #critter svg, .cr-eyes-open, .cr-z, .ax-dot.active { animation: none; }
   .nav-ink { transition: opacity 0.2s ease; }
 }
+
+/* Blog cards for posts on this site: image on the left, text on the right */
+.blog-card.has-img { flex-direction: row; align-items: center; gap: 16px; padding: 12px; }
+.blog-img { width: 190px; aspect-ratio: 1200 / 630; object-fit: cover; border-radius: 8px; border: 1px solid var(--rule); flex-shrink: 0; }
+.blog-text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.blog-card.has-img .blog-title { font-size: 15px; }
+@media (max-width: 560px) {
+  .blog-card.has-img { flex-direction: column; align-items: stretch; }
+  .blog-img { width: 100%; }
+}
+
+/* Older posts on other platforms: a collapsed, muted list on blogs.html */
+.blog-older { margin-top: 22px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.blog-older summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); list-style: none; display: inline-flex; align-items: center; gap: 8px; }
+.blog-older summary::-webkit-details-marker { display: none; }
+.blog-older summary::before { content: "▸"; font-size: 11px; transition: transform 0.2s ease; }
+.blog-older[open] summary::before { transform: rotate(90deg); }
+.blog-older summary:hover { color: var(--accent); }
+.blog-older-n { font-weight: 500; font-size: 11px; padding: 0 7px; border-radius: 999px; background: var(--bg-soft); }
+.blog-older-list { display: flex; flex-direction: column; margin-top: 8px; }
+.blog-older-row { display: flex; align-items: baseline; gap: 10px; padding: 7px 2px; border-bottom: 1px solid var(--rule); background-image: none; }
+.blog-older-row:last-child { border-bottom: 0; }
+.blog-older-src { flex-shrink: 0; width: 72px; font-size: 11px; font-weight: 600; color: var(--muted); opacity: 0.75; }
+.blog-older-title { font-size: 13.5px; color: var(--muted); }
+.blog-older-row:hover .blog-older-title { color: var(--accent); }
+.blog-img-dark { display: none; }
+:root[data-theme="dark"] .blog-img-light { display: none; }
+:root[data-theme="dark"] .blog-img-dark { display: block; }
