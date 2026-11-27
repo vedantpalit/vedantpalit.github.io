@@ -850,6 +850,35 @@
     const LAMPS = [20, 50];
     const SUN = { x: 9, y: 6 };
 
+    // Time-of-day looks layered over the day/night palettes, at the strength k that
+    // js/sky.js uses for the page tint: a sinking orange sun under a Vice-style sky
+    // before sunset, a low peach sunrise, a plum-rose dawn glow, a violet dusk
+    const PHASES = {
+      sunset:  { skyTop: "#8f8cc4", skyBot: "#f7a99a", sun: "#ff8f5a", sunHi: "#ffc48a", cloud: "#ffd6da", cloudSh: "#f2aab8",
+                 water: "#8a8fc0", waterLo: "#767bb0", waterHi: "#f6b8c2",
+                 hill: "#86945e", hillLo: "#6b7a4b", hillHi: "#a7a56c", warm: 1, sunDrop: 6 },
+      sunrise: { skyTop: "#b9d2ef", skyBot: "#ffd6bd", sun: "#ffb26e", sunHi: "#ffd9a6", cloud: "#fff0e6", cloudSh: "#f6d2c4",
+                 warm: 0.5, sunDrop: 6 },
+      dawn:    { skyTop: "#18214a", skyBot: "#7a4a70", water: "#2c3a63", waterHi: "#6a4f7a", starFade: 1 },
+      dusk:    { skyTop: "#151b3c", skyBot: "#4d3768", water: "#26355c", waterHi: "#56497a", starFade: 0.5 }
+    };
+    let phase = { sky: null, k: 0 }, warm = 0, starFade = 0;
+    const hexOf = c => "#" + c.map(v => v.toString(16).padStart(2, "0")).join("");
+
+    function applyPhase() {
+      const base = PAL[mode];
+      P = Object.assign({}, base);
+      warm = 0; starFade = 0; SUN.y = 6;
+      const o = phase.sky && PHASES[phase.sky];
+      if (!o || !phase.k) return;
+      Object.keys(o).forEach(key => {
+        if (typeof o[key] === "string" && base[key]) P[key] = hexOf(mix(rgb(base[key]), rgb(o[key]), phase.k));
+      });
+      warm = (o.warm || 0) * phase.k;              // warm light on the facades
+      starFade = (o.starFade || 0) * phase.k;      // stars thin out toward dawn
+      if (o.sunDrop) SUN.y = 6 + Math.round(o.sunDrop * phase.k);   // sun sits lower near the horizon
+    }
+
     let mode = "day", P = PAL.day, bg = null, skyMask = null, litMask = null, luma = {};
 
     function lumaColors() {
@@ -900,7 +929,9 @@
 
       // Gabled houses: steep roof, window grid, optional timber framing
       HOUSES.forEach(([hx, w, top, fi, timber], hi) => {
-        const face = rgb(FACADES[fi]), wall = night ? dim(face) : face, shade = mix(wall, [0, 0, 0], 0.12);
+        const face = rgb(FACADES[fi]);
+        const wall = night ? dim(face) : warm ? mix(face, [255, 150, 115], 0.22 * warm) : face;
+        const shade = mix(wall, [0, 0, 0], 0.12);
         for (let y = top; y < BASE; y++) for (let x = hx; x < hx + w; x++) put(x, y, x === hx + w - 1 ? shade : wall);
         const rh = Math.ceil(w / 2) + 1;
         for (let k = 0; k < rh; k++) {
@@ -980,6 +1011,7 @@
       } else {
         for (let i = 0; i < 24; i++) {
           const x = Math.floor(hash(i, 3) * W), y = Math.floor(hash(i, 5) * 12);
+          if (hash(i, 9) < starFade) continue;
           if (skyMask[y * W + x]) set(x, y, Math.sin(sec * 2 + i * 1.3) > 0.2 ? C("star") : C("starLo"));
         }
         const moon = C("moon"), lo = C("moonLo");
@@ -1093,7 +1125,8 @@
 
     function setMode() {
       mode = document.documentElement.getAttribute("data-theme") === "dark" ? "night" : "day";
-      P = PAL[mode];
+      if (window.siteSky) phase = window.siteSky.moment();
+      applyPhase();
       lumaColors();
       buildBackdrop();
       cap.innerHTML = mode === "day"
@@ -1114,6 +1147,11 @@
 
     new MutationObserver(setMode).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     setMode();
+    // Follow the sky as it changes (the page tint drifts the same way)
+    setInterval(() => {
+      const m = window.siteSky && window.siteSky.moment();
+      if (m && (m.sky !== phase.sky || Math.abs(m.k - phase.k) > 0.03)) setMode();
+    }, 60000);
     if (reduce) return;
 
     // ~10 fps is plenty for pixel art; pause while off-screen or in a hidden tab
@@ -1404,13 +1442,12 @@
     requestAnimationFrame(frame);
   }
 
-  // Flip light/dark with a page-wide crossfade; the pixel world's sun/moon calls this
+  // Flip light/dark with a page-wide crossfade; the pixel world's sun/moon calls this.
+  // js/sky.js owns the theme: it follows sunrise/sunset and remembers a flip until the next one.
   function toggleTheme() {
     const root = document.documentElement;
     root.classList.add("theme-fade");
-    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    try { localStorage.setItem("theme", next); } catch (e) {}
+    window.siteSky.toggle();
     setTimeout(() => root.classList.remove("theme-fade"), 450);
   }
 

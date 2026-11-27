@@ -20,15 +20,8 @@
 <meta name="twitter:description" content="We read every pass of Inkling 2 Mini with a Jacobian lens. Steps the model never writes are still readable inside its loop.">
 <link rel="icon" href="../images/favicon.ico" sizes="48x48">
 <link rel="icon" href="../images/favicon.png" type="image/png" sizes="192x192">
-<script>
-  /* Same as the site's pages: set the theme before first paint */
-  (function () {
-    var stored = null;
-    try { stored = localStorage.getItem("theme"); } catch (e) {}
-    var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    document.documentElement.setAttribute("data-theme", theme);
-  })();
-</script>
+<!-- Same as the site's pages: theme and sky tint from the time of day -->
+<script src="../js/sky.js"></script>
 </head>
 <body>
 
@@ -40,7 +33,7 @@
    nav with a red ink bar) + research-blog figures (wider than the text, numbered captions, live hover charts). */
 :root {
   --bg: #ffffff; --bg-soft: #f6f6f4; --nav-bg: rgba(255,255,255,.88);
-  --text: #3a3a37; --strong: #111111; --muted: #6b6b67; --faint: #9a9a95; --rule: #ebebe8; --rule-2: #dcdcd8;
+  --text: #3a3a37; --strong: #111111; --muted: #6b6b67; --faint: #9a9a95; --rule: rgba(0,0,0,.11); --rule-2: rgba(0,0,0,.16);
   --accent: #0f6e6e; --accent-hover: #0a5555; --red: #c8372d;
   --c1: #0f6e6e; --c2: #c8372d; --c3: #7b8794; --c4: #d0892b;
   --echo: #e9e9e5; --new: #9fd3cd; --hid: #c8372d; --note-bg: #fbf6e8; --note-ink: #7a5b12; --note-rule: #eadcae;
@@ -51,17 +44,18 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #121517; --bg-soft: #1a1e21; --nav-bg: rgba(18,21,23,.88); --text: #c9ced2; --strong: #eceff1; --muted: #8a9399; --faint: #626b71;
-  --rule: #262b2f; --rule-2: #323840; --accent: #5fc2b8; --accent-hover: #8fd8cf; --red: #f07c6f;
+  --rule: rgba(255,255,255,.11); --rule-2: rgba(255,255,255,.16); --accent: #5fc2b8; --accent-hover: #8fd8cf; --red: #f07c6f;
   --c1: #5fc2b8; --c2: #f07c6f; --c3: #9aa5ae; --c4: #e8a64a; --echo: #23282c; --new: #2c6560; --hid: #f07c6f;
   --note-bg: #26221a; --note-ink: #e4cf93; --note-rule: #4a4130; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #121517; --bg-soft: #1a1e21; --nav-bg: rgba(18,21,23,.88); --text: #c9ced2; --strong: #eceff1; --muted: #8a9399; --faint: #626b71;
-  --rule: #262b2f; --rule-2: #323840; --accent: #5fc2b8; --accent-hover: #8fd8cf; --red: #f07c6f;
+  --rule: rgba(255,255,255,.11); --rule-2: rgba(255,255,255,.16); --accent: #5fc2b8; --accent-hover: #8fd8cf; --red: #f07c6f;
   --c1: #5fc2b8; --c2: #f07c6f; --c3: #9aa5ae; --c4: #e8a64a; --echo: #23282c; --new: #2c6560; --hid: #f07c6f;
   --note-bg: #26221a; --note-ink: #e4cf93; --note-rule: #4a4130; color-scheme: dark }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.72 var(--sans); -webkit-font-smoothing: antialiased; counter-reset: fig; }
+/* The time-of-day sky from js/sky.js, fixed to the screen like on the site's pages */
+body { margin: 0; background: var(--bg) linear-gradient(180deg, var(--sky-top, var(--bg)), var(--sky-mid, var(--bg)) 55%, var(--sky-bot, var(--bg))) fixed; color: var(--text); font: 17px/1.72 var(--sans); -webkit-font-smoothing: antialiased; counter-reset: fig; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); }
 a { color: var(--accent); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: color .2s, background-size .25s; }
 a:hover, a:focus { color: var(--accent-hover); background-size: 100% 1px; }
@@ -498,7 +492,7 @@ details.aside table.mini { margin: 12px 0 4px; }
 <style>.site-home{position:absolute;top:18px;left:20px;z-index:5;font:600 13px var(--sans);color:var(--muted);text-decoration:none}.site-home:hover{color:var(--accent)}@media (max-width:999px){.site-home{position:static;display:block;padding:14px 16px 0}}</style>
 <nav class="top" aria-label="Sections"><div class="in"><span class="ink"></span><span id="navlinks" style="display:contents"></span><span class="sp"></span><div class="readmeter" aria-hidden="true"><span class="rm-track"><span class="rm-fill"></span></span><span class="rm-pct">0% read</span></div></div></nav>
 <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch light or dark mode" title="Light / dark"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg></button>
-<script>(function(){var r=document.documentElement,s=null;try{s=localStorage.getItem("theme")}catch(e){}if(s&&!r.getAttribute("data-theme"))r.setAttribute("data-theme",s);document.getElementById("theme-btn").addEventListener("click",function(){var cur=r.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),next=cur==="dark"?"light":"dark";r.setAttribute("data-theme",next);try{localStorage.setItem("theme",next)}catch(e){}});})();</script>
+<script>document.getElementById("theme-btn").addEventListener("click", function () { window.siteSky.toggle(); });</script>
 <aside class="toc" id="toc" aria-label="Contents"><div class="readmeter" aria-hidden="true"><span class="rm-track"><span class="rm-fill"></span></span><span class="rm-pct">0% read</span></div><div class="tt">Contents</div><ol id="toc-list"><span class="bar"></span></ol></aside>
 <main>
 <header class="hero col">
@@ -1301,7 +1295,8 @@ function render(t) {
   if (ph.name === "coda" && t >= T.look + 0.9) { const [px, py] = P((ST.coda[0] + ST.coda[1]) / 2, 4); g.save(); g.font = "600 24px 'Pixelify Sans', sans-serif"; const w = g.measureText("Au").width + 24;
     g.fillStyle = K.ink; g.fillRect(px * S5 - w / 2 - 3, (py - 8) * S5 - 50, w + 6, 38); g.fillStyle = K.bg; g.fillRect(px * S5 - w / 2, (py - 8) * S5 - 47, w, 32); g.restore();
     txt("Au", px * S5, (py - 8) * S5 - 30, "600 24px 'Pixelify Sans', sans-serif", "#a86b1d", "center"); }
-  if (t > T.end - 0.4) { g.save(); g.globalAlpha = (t - (T.end - 0.4)) / 0.4; g.fillStyle = K.bg; g.fillRect(0, 0, cv.width, cv.height); g.restore(); }
+  // fade the frame out to transparent (not to a flat --bg), so the page's sky tint shows through
+  if (t > T.end - 0.4) { g.save(); g.globalCompositeOperation = "destination-out"; g.globalAlpha = (t - (T.end - 0.4)) / 0.4; g.fillRect(0, 0, cv.width, cv.height); g.restore(); }
 }
 const sp = document.getElementById("tspeed"), spo = document.getElementById("tspeed-o");
 let speed = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 1, tShown = 12.5, last = null;

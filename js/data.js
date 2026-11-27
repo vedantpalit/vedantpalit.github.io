@@ -266,8 +266,9 @@ const BLOGS = [
     blurb: "A looped transformer works out reasoning steps in words inside its loop, without writing them down. We read every pass of Inkling 2 Mini with a Jacobian lens…",
     url: "blogs/reading-the-loop.html",
     date: "Nov 2026",
-    image: "images/reading-the-loop-card.png",
-    imageDark: "images/reading-the-loop-card-dark.png"
+    // transparent copies of the link-preview card, so the sky tint shows through
+    image: "images/reading-the-loop-thumb.png",
+    imageDark: "images/reading-the-loop-thumb-dark.png"
   },
   {
     source: "Medium",

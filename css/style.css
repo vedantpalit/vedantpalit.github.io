@@ -12,7 +12,7 @@
   --accent: #0f6e6e;
   --accent-hover: #0a5555;
   --highlight: #c8372d;     /* red details: nav underline, dates, widget bar */
-  --rule: #ebebe8;
+  --rule: rgba(0, 0, 0, 0.11);          /* translucent, so lines stay visible on the sky tint */
   --max-width: 700px;
 
   /* Luma, awake (warm daytime palette) */
@@ -35,7 +35,7 @@
   --accent: #5fc2b8;
   --accent-hover: #8fd8cf;
   --highlight: #f07c6f;
-  --rule: #272c30;
+  --rule: rgba(255, 255, 255, 0.11);
 
   /* Luma, asleep (moonlit plum) */
   --cr-o: #121110;
@@ -51,9 +51,13 @@
 
 html { scroll-behavior: smooth; }
 
+/* The sky tint (js/sky.js) is a screen-high gradient that stays put while
+   the page scrolls; without it the three stops fall back to plain --bg */
 body {
   margin: 0;
   background-color: var(--bg);
+  background-image: linear-gradient(180deg, var(--sky-top, var(--bg)), var(--sky-mid, var(--bg)) 55%, var(--sky-bot, var(--bg)));
+  background-attachment: fixed;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 15px;
@@ -1040,10 +1044,13 @@ section h2.section-head {
   align-items: flex-start;
   justify-content: center;
   cursor: zoom-in;
-  transition: transform 0.15s ease;
 }
 
-.entry .thumb:hover { transform: translateY(-2px); }
+/* Paper figures have transparent backgrounds (light and dark versions), so the
+   page's time-of-day tint shows through them in every browser */
+.entry .thumb img { transition: transform 0.15s ease; }
+
+.entry .thumb:hover img { transform: translateY(-2px); }
 
 .entry .thumb img {
   max-width: 100%;
@@ -1073,6 +1080,9 @@ section h2.section-head {
   border-radius: 6px;
   background-color: #fff;
 }
+
+/* Figures are transparent: back the dark versions with the dark page colour */
+:root[data-theme="dark"] .lightbox img { background-color: #121517; }
 
 .lightbox-caption {
   margin-top: 10px;
